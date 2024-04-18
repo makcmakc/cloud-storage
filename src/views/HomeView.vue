@@ -2,65 +2,16 @@
 import Sidebar from '../components/Sidebar.vue'
 import { Button } from '@/components/ui/button'
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet'
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from '@/components/ui/drawer'
-
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-
-import { Label } from '@/components/ui/label'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 
 import { Menu, Moon, Sun, Github } from 'lucide-vue-next';
-
-
-// import RadixIconsHamburgerMenu from '~icons/radix-icons/hamburger-menu'
-// import RadixIconsUpload from '~icons/radix-icons/upload'
-// import RadixIconsGithubLogo from '~icons/radix-icons/github-logo'
-// import RadixIconsMoon from '~icons/radix-icons/moon'
-// import Sun from '~icons/radix-icons/sun'
-// import RadixIconsDotsVertical from '~icons/radix-icons/dots-vertical';
-// import RadixIconsPlus from '~icons/radix-icons/plus';
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 
 import { useMagicKeys, useToggle } from '@vueuse/core'
 import { onMounted, ref, watch } from 'vue';
 
-const isDark = ref(false);
+const isDark = ref(true);
 const theme = ref('dark');
 const routes = []
 const toggleDark = useToggle(isDark)
@@ -68,7 +19,7 @@ const toggleDark = useToggle(isDark)
 const links = [
   {
     name: 'GitHub',
-    href: 'https://github.com/makcmakc/cloud-storage-frontend',
+    href: 'https://github.com/makcmakc/cloud-storage',
     icon: Github,
   },
 ]
@@ -107,179 +58,227 @@ function onExpand() {
   isCollapsed.value = false
 }
 
+import { Progress } from '@/components/ui/progress'
+import { ChevronDown, File, Files, Images, Image, Music4, FileVideo, ListMusic, BookImage } from 'lucide-vue-next';
+import SidebarNav from '../components/SidebarNav.vue'
+
+
+const playlists = [
+  'Ariana Grande',
+  'Linkin Park',
+  'Smashing Pumpkins',
+  'Taylor Swift',
+  'Bring Me The Horizon',
+  'Eminem',
+]
+
+const albums = [
+  'ROMANS',
+  'Disappear'
+  // into the starry sky
+]
+
+const nav = [
+  {
+    title: 'Files',
+    icon: File,
+    variant: 'ghost',
+    route: 'files'
+  },
+  {
+    title: 'Gallery',
+    icon: Images,
+    variant: 'ghost',
+    route: 'gallery'
+  },
+  {
+    title: 'Playlist',
+    icon: ListMusic,
+    variant: 'ghost',
+    route: 'playlist'
+  },
+]
+
+const isOpen = ref(true)
+
+const isPlaylistsOpen = ref(true)
+const isAlbumsOpen = ref(true)
+
+
+
+const progress = ref(13)
+
 import { cn } from '@/lib/utils'
 </script>
 
 <template>
+  <header class="sticky z-40 top-0 bg-background/80 backdrop-blur-lg border-b border-border">
+    <div class="px-4 flex h-14 items-center">
 
-<header class="sticky z-40 top-0 bg-background/80 backdrop-blur-lg border-b border-border">
-  <div class="px-6 flex h-14 items-center">
-
-    <!-- {{  isCollapsed  }} -->
-
-  <Sheet>
-    <SheetTrigger as-child>
-      <Button
-        variant="outline"
-        size="icon"
-        class="shrink-0 md:hidden mr-4"
-      >
-        <Menu class="h-5 w-5" />
-        <span class="sr-only">Toggle navigation menu</span>
-      </Button>
-    </SheetTrigger>
-    <SheetContent side="left" class="flex flex-col">
-      <nav class="grid gap-2 text-lg font-medium">
-
-      </nav>
-      <div class="mt-auto">
-        <Card>
-          <CardHeader>
-            <CardTitle>Storage size</CardTitle>
-            <CardDescription>
-              Unlock all features and get unlimited access to our
-              support team.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button size="sm" class="w-full">
-              Upgrade
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    </SheetContent>
-  </Sheet>   
-
-    <div class="mr-4 md:mr-1 hidden md:flex">
-      <router-link to="/" class="relative z-20 flex items-center text-lg font-medium">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          class="mr-2 h-6 w-6"
-        >
-          <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3" />
-        </svg>
-        Meme Inc
-      </router-link>
-
-      <!-- <nav class="flex items-center max-lg:space-x-4 space-x-6 text-sm font-medium">
-        <a
-          v-for="route in routes"
-          :key="route.title"
-          :href="route.href"
-          :target="route.external ? '_target' : undefined"
-          class="transition-colors hover:text-foreground/80 text-foreground/60"
-          :class="{
-            'font-semibold !text-foreground': $route.path === `${route.href}.html`,
-            'hidden lg:block': route?.href?.includes('github'),
-          }"
-        >
-          {{ route.title }}
-        </a>
-      </nav> -->
-    </div>
-    <!-- <MobileNav /> -->
-
-    <div class="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-      <!-- <div class="w-full flex-1 md:w-auto md:flex-none">
+    <Sheet>
+      <SheetTrigger as-child>
         <Button
           variant="outline"
-          class="relative h-8 w-full justify-start rounded-[0.5rem] bg-background text-sm font-normal text-muted-foreground shadow-none sm:pr-12 md:w-40 lg:w-64"
-          @click="isOpen = true"
+          size="icon"
+          class="shrink-0 md:hidden mr-4"
         >
-          <span class="hidden lg:inline-flex">Search documentation...</span>
-          <span class="inline-flex lg:hidden">Search...</span>
-          <Kbd class="pointer-events-none absolute right-[0.3rem] top-[0.3rem] hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
-            <span class="text-xs">⌘</span>K
-          </Kbd>
+          <Menu class="h-5 w-5" />
+          <span class="sr-only">Toggle navigation menu</span>
         </Button>
-      </div> -->
-
-      <div></div>
-
-      <nav class="flex items-center">
-        <Button
-          v-for="link in links"
-          :key="link.name"
-          as="a"
-          class="w-9 h-9 md:flex hidden"
-          :href="link.href" target="_blank"
-          :variant="'ghost'"
-          :size="'icon'"
-        >
-          <component :is="link.icon" class="w-5 h-5" />
-        </Button>
-
-        <ClientOnly>
-          <Button
-            class="w-9 h-9"
-            aria-label="Toggle dark mode"
-            :variant="'ghost'"
-            :size="'icon'"
-            @click="toggleDark()"
-          >
-            <component
-              :is="isDark ? Sun : Moon"
-              class="w-5 h-5 text-foreground"
-            />
-          </Button>
-        </ClientOnly>
-      </nav>
-    </div>
-  </div>
-</header>
-
-
-  <!-- <main class="grid lg:grid-cols-6 md:grid-cols-4 h-full"> -->
-    <main class="h-full">
-    <ResizablePanelGroup
-      id="resize-panel-group-1"
-      direction="horizontal"
-      class="h-full w-full items-stretch"
-    >
-      <ResizablePanel
-        with-handle
-        id="resize-panel-1"
-        :default-size="defaultLayout[0]"
-        :collapsed-size="navCollapsedSize"
-        collapsible
-        :min-size="10"
-        :max-size="12"
-        :class="cn(isCollapsed && 'min-w-[50px] transition-all duration-300 ease-in-out')"
-        @expand="onExpand"
-        @collapse="onCollapse"
-      >
-
-        <Sidebar />
-      </ResizablePanel>
-      <!-- <ResizableHandle id="resize-handle-3" with-handle /> -->
-      <ResizableHandle :default-size="defaultLayout[1]" :min-size="30" />
-        <ResizablePanel :default-size="5">
-          <div class="h-full px-4 py-6 lg:px-4 flex-1	">
-            <div class="h-full space-y-6 ">
-              <RouterView></RouterView>
+      </SheetTrigger>
+      <SheetContent side="left" class="flex flex-col">
+        <SheetTitle>
+          <router-link to="/" class="relative z-20 flex items-center text-lg font-medium">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              class="mr-2 h-6 w-6"
+            >
+              <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3" />
+            </svg>
+            Meme Inc
+          </router-link>        
+        </SheetTitle>
+        <ScrollArea>
+          <nav class="grid gap-2 text-base font-medium">
+            <div class="px-1">
+              <h2 class="mb-2 px-1 text-base font-semibold tracking-tight">
+                Discover
+              </h2>
+              <div>
+                <SidebarNav :links="nav"/>
+              </div>
+            </div>
+            <Collapsible v-model:open="isPlaylistsOpen">
+              <CollapsibleTrigger class="py-2 flex items-center justify-between w-full">
+                <h2 class="relative px-1 text-base font-semibold tracking-tight">Playlists</h2>
+                <ChevronDown class="transition-transform text-muted-foreground origin-center text-sm" :size="20" :class="{'rotate-180': isPlaylistsOpen}" /></CollapsibleTrigger>
+              <CollapsibleContent class="w-full">
+                <ScrollArea class="h-[220px] px-1">
+                <div class="space-y-1 pt-2">
+                  <Button
+                    v-for="(playlist, i) in playlists"
+                    :key="`${playlist}-${i}`"
+                    variant="ghost"
+                    class="w-full justify-start font-normal"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      class="mr-2 h-4 w-4"
+                    >
+                      <path d="M21 15V6" />
+                      <path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+                      <path d="M12 12H3" />
+                      <path d="M16 6H3" />
+                      <path d="M12 18H3" />
+                    </svg>
+                    <span class="text-sm">{{ playlist }}</span>
+                  </Button>
+                </div>
+              </ScrollArea>           
+              </CollapsibleContent>
+            </Collapsible>
+            <Collapsible v-model:open="isAlbumsOpen">
+              <CollapsibleTrigger class="py-2 flex items-center justify-between w-full">
+                <h2 class="relative px-1 text-base font-semibold tracking-tight">Albums</h2>
+                <ChevronDown class="transition-transform text-muted-foreground origin-center text-sm" :size="20" :class="{'rotate-180': isAlbumsOpen}" /></CollapsibleTrigger>
+              <CollapsibleContent class="w-full">
+                <ScrollArea class="h-[200px] px-1">
+                <div class="space-y-1 pt-2">
+                  <Button
+                    v-for="(album, i) in albums"
+                    :key="`${album}-${i}`"
+                    variant="ghost"
+                    class="w-full justify-start font-normal"
+                  >
+                    <BookImage  class="mr-2 h-4 w-4" :size="24" />
+                    <span class="text-sm">{{ album }}</span>
+                  </Button>
+                </div>
+              </ScrollArea>           
+              </CollapsibleContent>
+            </Collapsible>
+          </nav>
+        </ScrollArea>
+        <div class="mt-auto -ml-4 -mr-4">
+          <div class="rounded-lg border p-4">
+            <div class="flex flex-col justify-between w-full">
+              <span class="text-base text-muted-foreground">Storage size</span>
+              <Progress v-model="progress" class="mt-3 mb-2"  />
+              <div class="text-xs text-muted-foreground">Used 1.3gb from 4gb</div>
             </div>
           </div>
-        </ResizablePanel>
-    </ResizablePanelGroup>
-
-
-
-    <!-- <div class="col-span-3 lg:col-span-3 lg:border-l md:border-l">
-      <div class="h-full px-4 py-6 lg:px-4">
-        <div class="h-full space-y-6">
-
-          <RouterView></RouterView>
-
         </div>
-      </div>
-    </div> -->
+      </SheetContent>
+    </Sheet>   
 
+      <div class="mr-4 md:mr-1 hidden md:flex">
+        <router-link to="/" class="relative z-20 flex items-center text-lg font-medium">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            class="mr-2 h-6 w-6"
+          >
+            <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3" />
+          </svg>
+          Meme Inc
+        </router-link>
+      </div>
+
+      <div class="flex flex-1 items-center justify-between space-x-2 md:justify-end">
+        <nav class="flex items-center">
+          <Button
+            v-for="link in links"
+            :key="link.name"
+            as="a"
+            class="w-9 h-9 md:flex hidden"
+            :href="link.href" target="_blank"
+            :variant="'ghost'"
+            :size="'icon'"
+          >
+            <component :is="link.icon" class="w-5 h-5" />
+          </Button>
+
+          <ClientOnly>
+            <Button
+              class="w-9 h-9"
+              aria-label="Toggle dark mode"
+              :variant="'ghost'"
+              :size="'icon'"
+              @click="toggleDark()"
+            >
+              <component
+                :is="isDark ? Sun : Moon"
+                class="w-5 h-5 text-foreground"
+              />
+            </Button>
+          </ClientOnly>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex h-full">
+    <Sidebar class="pb-4 w-[300px] md:flex flex-col hidden"/>
+
+    <ScrollArea class=" w-full p-4 md:border-l">
+      <RouterView></RouterView>
+    </ScrollArea>
   </main>
 </template>

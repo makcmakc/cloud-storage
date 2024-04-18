@@ -31,10 +31,7 @@ defineProps<NavProps>()
 </script>
 
 <template>
-  <div
-    :data-collapsed="isCollapsed"
-    class="group flex flex-col data-[collapsed=true]:py-2"
-  >
+  <div :data-collapsed="isCollapsed" class="group flex flex-col data-[collapsed=true]:py-2">
     <nav class="grid group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2 space-y-1">
       <template v-for="(link, index) of links">
         <Tooltip v-if="isCollapsed" :key="`1-${index}`" :delay-duration="0">
