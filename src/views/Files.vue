@@ -43,23 +43,10 @@
             </DropdownMenu>
           </div> 
         </div>
-          <Button>
-            <Upload class="mr-2 h-4 w-4" />
-            Upload file
-          </Button>
-
-
-          <!-- <Dialog>
-            <DialogTrigger>
-              <Button variant="outline">
-                Edit Profile
-              </Button>
-            </DialogTrigger>
-            <DialogContent class="sm:max-w-[425px]">
-              <h1>alsdkasdlaksjl</h1>
-            </DialogContent>
-          </Dialog>    -->
-
+        <Button>
+          <Upload class="mr-2 h-4 w-4" />
+          Upload file
+        </Button>
       </div>
   </div>
 
@@ -164,6 +151,17 @@ import { Separator } from '@/components/ui/separator'
 import { AudioLines, Folder, EllipsisVertical, Plus, Upload, Music, FolderPlus } from 'lucide-vue-next';
 
 import { ref } from 'vue';
+
+
+// import {
+//   Dialog,
+//   DialogContent,
+//   DialogDescription,
+//   DialogFooter,
+//   DialogHeader,
+//   DialogTitle,
+//   DialogTrigger,
+// } from '@/components/ui/dialog'
 
 import { cn } from '@/lib/utils'
 import File from '../components/File.vue'
