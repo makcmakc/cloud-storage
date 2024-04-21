@@ -61,13 +61,6 @@ const playHandler = (song: object) => {
           </div>
         </div>
 
-        <!-- <div class="flex items-center space-x-4">
-          <Skeleton class="h-12 w-12 rounded-full" />
-          <div class="space-y-2">
-            <Skeleton class="h-4 w-[250px]" />
-            <Skeleton class="h-4 w-[200px]" />
-          </div>
-        </div> -->
       </ContextMenuTrigger>
       <ContextMenuContent class="w-40">
         <ContextMenuItem>Add to Library</ContextMenuItem>
@@ -130,20 +123,19 @@ transition-duration: 150ms;
 
 .card-action {
   position: absolute;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    left: 50%;
-    width: 100%;
-    opacity: 0;
-    z-index: 9;
-    background: rgba(0, 0, 0, .5);
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition-property: opacity;
-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-transition-duration: 150ms;
-/* cursor: pointer; */
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  opacity: 0;
+  z-index: 9;
+  background: rgba(0, 0, 0, .5);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
 }
 </style>

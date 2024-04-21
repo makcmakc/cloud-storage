@@ -8,6 +8,7 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
+      // redirect: 'files',
       children: [
         {
           path: '/files',
