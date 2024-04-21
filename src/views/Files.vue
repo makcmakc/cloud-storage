@@ -126,12 +126,11 @@
 
   <Separator class="my-4" />
 
-  <div class="gap-4 grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))]">
+  <div class="gap-4 grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))]">
     <File
-      v-for="file in madeForYouAlbums"
+      v-for="file in files"
       :key="file.name"
       :album="file"
-      class="w-[150px]"
       aspect-ratio="square"
       :width="150"
       :height="150"
@@ -149,25 +148,27 @@ import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer'
 import { Separator } from '@/components/ui/separator'
 
 import { AudioLines, Folder, EllipsisVertical, Plus, Upload, Music, FolderPlus } from 'lucide-vue-next';
-
-import { ref } from 'vue';
-
-
-// import {
-//   Dialog,
-//   DialogContent,
-//   DialogDescription,
-//   DialogFooter,
-//   DialogHeader,
-//   DialogTitle,
-//   DialogTrigger,
-// } from '@/components/ui/dialog'
-
-import { cn } from '@/lib/utils'
 import File from '../components/File.vue'
-import { madeForYouAlbums } from '../components/albums'
+
+import { ref, computed } from 'vue';
+import { useFilesStore } from '@/stores/files' 
+
+import { onMounted } from "vue"
+
 
 const viewBy = ref('tile')
 const sortBy = ref('name')
+const files = ref([])
 
+const filesStore = useFilesStore()
+
+onMounted(async () => {
+  const data = await filesStore.fetchFiles()
+  await filesStore.fetchPublicURL()
+  files.value = data
+  console.log(data)
+})
+
+
+// import { madeForYouAlbums } from '../components/albums'
 </script>
