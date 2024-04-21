@@ -3,7 +3,7 @@ import type { Album } from './albums'
 import { playlists } from './playlists'
 import PlusCircledIcon from '~icons/radix-icons/plus-circled'
 import { cn } from '@/lib/utils'
-import { isVideo, isImage, isDocument, isAudio } from "@/utils/is.js"
+import { isVideo, isImage, isDocument, isDOC, isPDF, isAudio } from "@/utils/is.js"
 import {
   ContextMenu,
   ContextMenuCheckboxItem,
@@ -70,7 +70,7 @@ withDefaults(defineProps<AlbumArtworkProps>(), {
         <div v-if="isVideo(album.metadata.mimetype)" class="overflow-hidden card rounded-md relative">
           <video controls :src="filesStore.getPublicURL+album.name"></video>
         </div>
-        <div v-if="isDocument(album.metadata.mimetype)" class="overflow-hidden p-4 card rounded-md relative">
+        <div v-if="isDOC(album.metadata.mimetype)" class="overflow-hidden p-4 card rounded-md relative">
           <img
             src="https://cdn-icons-png.flaticon.com/512/5968/5968517.png"
             :alt="album.name"
@@ -81,10 +81,22 @@ withDefaults(defineProps<AlbumArtworkProps>(), {
               aspectRatio === 'portrait' ? 'aspect-[3/4]' : 'aspect-square',
             )"
           >
-        </div>         
+        </div>
+        <div v-if="isPDF(album.metadata.mimetype)" class="overflow-hidden p-4 card rounded-md relative">
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/4726/4726010.png"
+            :alt="album.name"
+            :width="width"
+            :height="height"
+            :class="cn(
+              'card-image w-auto object-contain',
+              aspectRatio === 'portrait' ? 'aspect-[3/4]' : 'aspect-square',
+            )"
+          >
+        </div>          
         <div v-if="isAudio(album.metadata.mimetype)" class="overflow-hidden p-4 card rounded-md relative">
           <img
-            src="https://cdn-icons-png.flaticon.com/512/10181/10181172.png"
+            src="https://cdn-icons-png.flaticon.com/256/4287/4287943.png"
             :alt="album.name"
             :width="width"
             :height="height"
@@ -96,33 +108,6 @@ withDefaults(defineProps<AlbumArtworkProps>(), {
         </div>        
       </ContextMenuTrigger>
       <ContextMenuContent class="w-40">
-        <!-- <ContextMenuItem>Add to Library</ContextMenuItem>
-        <ContextMenuSub>
-          <ContextMenuSubTrigger>Add to Playlist</ContextMenuSubTrigger>
-          <ContextMenuSubContent class="w-48">
-            <ContextMenuItem>
-              <PlusCircledIcon class="mr-2 h-4 w-4" />
-              New Playlist
-            </ContextMenuItem>
-            <ContextMenuSeparator />
-            <ContextMenuItem v-for="playlist in playlists" :key="playlist">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                class="mr-2 h-4 w-4"
-                viewBox="0 0 24 24"
-              >
-                <path d="M21 15V6M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM12 12H3M16 6H3M12 18H3" />
-              </svg>
-              {{ playlist }}
-            </ContextMenuItem>
-          </ContextMenuSubContent>
-        </ContextMenuSub>
-        <ContextMenuSeparator /> -->
         <ContextMenuItem>
           <Share :size="14" class="mr-2" />
             Share
