@@ -19,12 +19,27 @@ export const useFilesStore = defineStore('files', {
     setLoading(loading) {
       this.loading = loading;
     },
+
+    setUploadingFiles(files) {
+      console.log('Files: ', files)
+      files.map(file => {
+        this.files.push({
+          name: file.name,
+          id: self.crypto.randomUUID(),
+          uploading: true,
+          metadata: {
+            size: file.size,
+            mimetype: file.type,
+            lastModified: file.lastModified,
+          }        
+        })
+      })
+    },
+
     async fetchFiles() {
       this.loading = true
 
-      const { data, error } = await supabase.storage
-        .from('avatars')
-        .list();
+      const { data, error } = await supabase.storage.from('avatars').list();
       
       if (error) {
         console.log(error)
@@ -32,10 +47,9 @@ export const useFilesStore = defineStore('files', {
       }
 
       this.files = data
-  
       this.loading = false
 
-      return this.files
+      return data
     },
 
     async fetchPublicURL() {

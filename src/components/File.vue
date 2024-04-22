@@ -56,15 +56,19 @@ withDefaults(defineProps<AlbumArtworkProps>(), {
     <ContextMenu>
       <ContextMenuTrigger>
         <div v-if="isImage(album.metadata.mimetype)" class="overflow-hidden card rounded-md relative">
-          <img
+          <div :class="cn('space-y-3 relative w-full xs:w-[150px]')" v-if="album.uploading">
+            <Skeleton class="h-[150px] w-auto" />
+            <div class="space-y-2">
+              <Skeleton class="h-3 w-full" />
+            </div>
+          </div>      
+          <img v-else
             :src="filesStore.getPublicURL+album.name"
             :alt="album.name"
             :width="width"
             :height="height"
-            :class="cn(
-              'card-image h-auto w-auto object-contain',
-              aspectRatio === 'portrait' ? 'aspect-[3/4]' : 'aspect-square',
-            )"
+            :data-status="album.uploading"
+            :class="cn('card-image h-auto w-auto object-contain', aspectRatio === 'portrait' ? 'aspect-[3/4]' : 'aspect-square')"
           >
         </div>
         <div v-if="isVideo(album.metadata.mimetype)" class="overflow-hidden card rounded-md relative">
@@ -143,7 +147,7 @@ withDefaults(defineProps<AlbumArtworkProps>(), {
         </ContextMenuItem>
       </ContextMenuContent>
     </ContextMenu>
-    <div class="space-y-1 text-sm">
+    <div class="space-y-1 text-sm" v-if="!album.uploading">
       <h3 class="font-medium leading-5 text-center">
         {{ truncateString(album.name) }}
       </h3>

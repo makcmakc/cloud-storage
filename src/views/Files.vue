@@ -43,10 +43,7 @@
             </DropdownMenu>
           </div> 
         </div>
-        <Button>
-          <Upload class="mr-2 h-4 w-4" />
-          Upload file
-        </Button>
+        <UploadButton />
       </div>
   </div>
 
@@ -65,10 +62,7 @@
               <FolderPlus :size="30" />
               <span class="ml-4">Create folder</span>
             </div>
-            <div class="flex items-center">
-              <Upload :size="30" />
-              <span class="ml-4">Upload file</span>
-            </div>
+            <UploadButton />
           </div>
         </DrawerContent>
       </Drawer>      
@@ -126,7 +120,7 @@
 
   <Separator class="my-4" />
 
-  <div class="gap-4 grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))]">
+  <div class="gap-4 grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))]" v-if="files.length">
     <File
       v-for="file in files"
       :key="file.name"
@@ -134,7 +128,7 @@
       aspect-ratio="square"
       :width="150"
       :height="150"
-    />            
+    />      
   </div>
 </template>
 
@@ -148,26 +142,37 @@ import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer'
 import { Separator } from '@/components/ui/separator'
 
 import { AudioLines, Folder, EllipsisVertical, Plus, Upload, Music, FolderPlus } from 'lucide-vue-next';
-import File from '../components/File.vue'
+// import File from '../components/File.vue'
 
 import { ref, computed } from 'vue';
 import { useFilesStore } from '@/stores/files' 
 
+import UploadButton from '../components/UploadButton.vue';
+
 import { onMounted } from "vue"
+
+import { defineAsyncComponent } from 'vue'
+
+const File = defineAsyncComponent(() => import('../components/File.vue'))
+
 
 
 const viewBy = ref('tile')
 const sortBy = ref('name')
-const files = ref([])
 
 const filesStore = useFilesStore()
 
+
 onMounted(async () => {
-  const data = await filesStore.fetchFiles()
+  filesStore.setLoading(true)
+  await filesStore.fetchFiles()
   await filesStore.fetchPublicURL()
-  files.value = data
-  console.log(data)
+  filesStore.setLoading(false)
+  // setTimeout(() => filesStore.setLoading(false), 200)
 })
+
+
+const files = computed(() => filesStore.getFiles)
 
 
 // import { madeForYouAlbums } from '../components/albums'
