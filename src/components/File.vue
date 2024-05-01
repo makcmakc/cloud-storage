@@ -56,10 +56,43 @@ withDefaults(defineProps<AlbumArtworkProps>(), {
     <ContextMenu>
       <ContextMenuTrigger>
         <div v-if="isImage(album.metadata.mimetype)" class="overflow-hidden card rounded-md relative">
-          <div :class="cn('space-y-3 relative w-full xs:w-[150px]')" v-if="album.uploading">
-            <Skeleton class="h-[150px] w-auto" />
-            <div class="space-y-2">
-              <Skeleton class="h-3 w-full" />
+          <div :class="cn('relative w-full xs:w-[150px] relative')" v-if="album.uploading">
+            <img
+            :src="album.src"
+            :alt="album.name"
+            :width="width"
+            :height="height"
+            :class="cn('card-image h-auto w-auto object-contain', aspectRatio === 'portrait' ? 'aspect-[3/4]' : 'aspect-square')">
+            <div class="status backdrop-blur-xs	bg-fil absolute	inset-y-0	">
+                <svg class="w-full h-full" viewBox="0 0 130 130">
+                  <!-- Background circle -->
+                  <circle
+                    class="text-neutral-400	 stroke-current"
+                    stroke-width="5"
+                    cx="65"
+                    cy="65"
+                    r="40"
+                    fill="transparent"
+                  ></circle>
+                  <!-- Progress circle -->
+                  <circle
+                    class="text-zinc-50 progress-ring__circle stroke-current"
+                    stroke-width="5"
+                    stroke-linecap="round"
+                    cx="65"
+                    cy="65"
+                    r="40"
+                    fill="transparent"
+                    stroke-dasharray="251.2" 
+                    :stroke-dashoffset="`calc(251.2 - (251.2 * ${album.progress}) / 100)`"
+                  ></circle>
+                  
+                  <!-- Center text -->
+                  <text style="font-weight: 700;" x="65" y="65" font-family="Verdana" fill="#fff" font-size="16" text-anchor="middle" alignment-baseline="middle">
+                    {{  album.progress + '%' }}
+                  </text>
+
+                </svg>
             </div>
           </div>      
           <img v-else
@@ -71,8 +104,13 @@ withDefaults(defineProps<AlbumArtworkProps>(), {
             :class="cn('card-image h-auto w-auto object-contain', aspectRatio === 'portrait' ? 'aspect-[3/4]' : 'aspect-square')"
           >
         </div>
-        <div v-if="isVideo(album.metadata.mimetype)" class="overflow-hidden card rounded-md relative">
-          <video controls :src="filesStore.getPublicURL+album.name"></video>
+        <div v-if="isVideo(album.metadata.mimetype)" class="card relative">
+          <!-- <div class="relative h-full w-full"> -->
+            <video controls :src="filesStore.getPublicURL+album.name"           :class="cn(
+              'card-image w-auto object-contain',
+              aspectRatio === 'portrait' ? 'aspect-[3/4]' : 'aspect-square',
+            )"></video>
+          <!-- </div> -->
         </div>
         <div v-if="isDOC(album.metadata.mimetype)" class="overflow-hidden p-4 card rounded-md relative">
           <img
@@ -154,3 +192,12 @@ withDefaults(defineProps<AlbumArtworkProps>(), {
     </div>
   </div>
 </template>
+
+
+<style>
+.progress-ring__circle {
+  transition: stroke-dashoffset 0.35s;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+</style>

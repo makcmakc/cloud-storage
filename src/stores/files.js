@@ -20,20 +20,46 @@ export const useFilesStore = defineStore('files', {
       this.loading = loading;
     },
 
-    setUploadingFiles(files) {
-      console.log('Files: ', files)
-      files.map(file => {
-        this.files.push({
-          name: file.name,
-          id: self.crypto.randomUUID(),
-          uploading: true,
-          metadata: {
-            size: file.size,
-            mimetype: file.type,
-            lastModified: file.lastModified,
-          }        
-        })
-      })
+    setUploadedFile(file, status) {},
+
+    setUploadingFiles(file, status) {
+      // console.log('Files: ', file, status)
+      let f = {
+        name: file.name,
+        src: URL.createObjectURL(file),
+        uploading: true,
+        progress: null,
+        metadata: {
+          size: file.size,
+          mimetype: file.type,
+          lastModified: file.lastModified ?? null,
+        }        
+      }
+
+      // if (status === 'success') {
+      //   // this.files.push(file)
+      //   f.src = file.url
+      //   delete f.uploading
+      //   delete f.progress
+      // }
+
+      this.files.push(f)
+    },
+
+    setProgress(file, progress) {
+      console.log('percentage : ', progress)
+      const current = this.files.find(el => el.id === file.id)
+      // console.log(current, this.files)
+      current.progress = progress
+    },
+
+    removeUploadingBlank(file, upload) {
+      console.log(file, upload, this.files)
+
+      this.files = this.files.filter(el => el.id !== file.id)
+      // this.files.push(upload.file)
+      // const current = this.files.find(el => el.id === file.id)
+      // this.files = {...this.files, ...upload}
     },
 
     async fetchFiles() {
