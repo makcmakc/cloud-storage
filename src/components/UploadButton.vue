@@ -13,46 +13,35 @@
       class="input-upload hidden"
       id="upload-input"
       multiple
-      @change="uploadAvatar"
+      @change="uploadHandler"
     />
   </span> 
 </template>
 
 <script setup lang="ts">
 
-import { Upload, Plus } from 'lucide-vue-next';
-import { createReusableTemplate, useMediaQuery } from '@vueuse/core'
-import { onMounted, ref } from 'vue'
-
+import { Upload } from 'lucide-vue-next';
+import { useMediaQuery } from '@vueuse/core'
 import { supabase } from '@/services/supabaseClient'
-
+import { defineEmits } from 'vue';
 import { cn } from '@/lib/utils'
 import { buttonVariants } from '@/components/ui/button'
 import { useToast } from '@/components/ui/toast/use-toast'
 
 import * as tus from 'tus-js-client'
-
-
 import { useFilesStore } from '@/stores/files' 
+
+
+interface HTMLInputEvent extends Event {
+  target: HTMLInputElement & EventTarget;
+}
+
+const emit = defineEmits(['open'])
 
 const filesStore = useFilesStore()
 const { toast } = useToast()
 
-// Reuse `form` section
-// const [UseTemplate, GridForm] = createReusableTemplate()
 const isDesktop = useMediaQuery('(min-width: 768px)')
-
-
-interface Metadata {
-  bucketName: string,
-  objectName: number,
-  contentType: string,
-  cacheControl: number,
-}
-
-// console.log(filesStore.getPublicURL)
-    // const imageSrc = URL.createObjectURL(file)
-    // console.log(URL.revokeObjectURL(imageSrc))
 
 const projectId = 'dmlhcuolooluzgphdomp'
 
@@ -60,7 +49,6 @@ const projectId = 'dmlhcuolooluzgphdomp'
 async function uploadFile(file: File) {
   const { data: { session } } = await supabase.auth.getSession()
 
-  // file.id = self.crypto.randomUUID(),
   filesStore.setUploadingFiles(file)
 
   return new Promise<void>((resolve, reject) => {
@@ -78,7 +66,7 @@ async function uploadFile(file: File) {
           bucketName: 'avatars',
           objectName: file.name,
           contentType: file.type,
-          cacheControl: 3600,
+          cacheControl: '3600',
         },
         onError: function (error) {
           console.log('Failed because: ' + error)
@@ -86,24 +74,14 @@ async function uploadFile(file: File) {
         },
         onProgress: function (bytesUploaded, bytesTotal) {
           const progress = ~~((bytesUploaded / bytesTotal) * 100)
-          console.log('progress : ', progress)
+          // console.log('progress : ', progress)
           filesStore.setProgress(file, progress)
         },
         onSuccess: function () {
-            console.log('Download %s from %s', upload.file.name, upload.url)
-      
-            resolve()
-
-            filesStore.removeUploadingBlank(file)
-            filesStore.fetchFiles() 
-
-            // filesStore.setUploadingFiles(uploaded, 'success')
-
-            // filesStore.setUploadingFiles(file, 'success')
-
-            // const current = filesStore.files.find(el => el.id === fileId)
-            // console.log('onSuccess : ' ,current)
-            // console.log('upload : ', upload.file)
+          // console.log('Download %s from %s', upload.file.name, upload.url)
+          resolve()
+          filesStore.removeUploadingBlank(file)
+          filesStore.fetchFiles()
         },
     })
 
@@ -121,15 +99,8 @@ async function uploadFile(file: File) {
 }
 
 // Handler for the file selection event
-const uploadAvatar = async (event) => {
-  const files = Array.from(event.target.files);
-
-  // files.map(async file => {
-  //   // const fileId = self.crypto.randomUUID()
-  //   // file.id = fileId
-  //   // filesStore.setUploadingFiles(file, null)
-  //   await uploadFile(file);
-  // })
-  await uploadFile(files[0]);
+async function uploadHandler (event?: HTMLInputEvent) {
+  const files: any = Array.from(event?.target?.files as FileList);
+  files.map(async file => await uploadFile(file))
 }
 </script>

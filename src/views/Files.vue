@@ -52,7 +52,7 @@
     <div class="flex gap-2 justify-between">
     <h1 class="text-xl font-semibold	">Files</h1>
     <div class="flex gap-4 justify-end">
-      <Drawer>
+      <Drawer v-model:open="isOpen">
         <DrawerTrigger>
           <Plus />
         </DrawerTrigger>
@@ -62,7 +62,7 @@
               <FolderPlus :size="30" />
               <span class="ml-4">Create folder</span>
             </div>
-            <UploadButton />
+            <UploadButton :isOpen="isOpen" @open="openHandler" />
           </div>
         </DrawerContent>
       </Drawer>      
@@ -156,11 +156,16 @@ import { defineAsyncComponent } from 'vue'
 const File = defineAsyncComponent(() => import('../components/File.vue'))
 
 
-
+const isOpen = ref(false)
 const viewBy = ref('tile')
 const sortBy = ref('name')
 
 const filesStore = useFilesStore()
+
+const openHandler = (val: boolean) => {
+  console.log(val, 'uploading!')
+  isOpen.value = false
+}
 
 
 onMounted(async () => {
@@ -168,7 +173,6 @@ onMounted(async () => {
   await filesStore.fetchFiles()
   await filesStore.fetchPublicURL()
   filesStore.setLoading(false)
-  // setTimeout(() => filesStore.setLoading(false), 200)
 })
 
 

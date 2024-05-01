@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { supabase } from '@/services/supabaseClient'
 // import { handleError } from '@/utils/handleError'
-
+// import { isVideo, isImage, isDocument, isDOC, isPDF, isAudio } from "@/utils/is.js"
 
 export const useFilesStore = defineStore('files', {
   state: () => ({
@@ -20,7 +20,7 @@ export const useFilesStore = defineStore('files', {
       this.loading = loading;
     },
 
-    setUploadedFile(file, status) {},
+    // setUploadedFile(file, status) {},
 
     setUploadingFiles(file, status) {
       // console.log('Files: ', file, status)
@@ -53,13 +53,8 @@ export const useFilesStore = defineStore('files', {
       current.progress = progress
     },
 
-    removeUploadingBlank(file, upload) {
-      console.log(file, upload, this.files)
-
+    removeUploadingBlank(file) {
       this.files = this.files.filter(el => el.id !== file.id)
-      // this.files.push(upload.file)
-      // const current = this.files.find(el => el.id === file.id)
-      // this.files = {...this.files, ...upload}
     },
 
     async fetchFiles() {
@@ -72,7 +67,15 @@ export const useFilesStore = defineStore('files', {
         return []
       }
 
-      this.files = data
+      // this.files = data.map(el => {
+      //   if (isDOC(el.metadata.mimetype)) {
+      //     el.src = 'https://cdn-icons-png.flaticon.com/512/5968/5968517.png'
+      //   }
+      //   if (isPDF(el.metadata.mimetype)) {
+      //     el.src = 'https://cdn-icons-png.flaticon.com/512/4726/4726010.png'
+      //   }        
+      // })
+
       this.loading = false
 
       return data
