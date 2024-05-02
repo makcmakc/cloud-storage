@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { supabase } from '@/services/supabaseClient'
 // import { handleError } from '@/utils/handleError'
-// import { isVideo, isImage, isDocument, isDOC, isPDF, isAudio } from "@/utils/is.js"
+import { isVideo, isImage, isDocument, isDOC, isPDF, isAudio } from "@/utils/is.js"
 
 export const useFilesStore = defineStore('files', {
   state: () => ({
@@ -60,6 +60,7 @@ export const useFilesStore = defineStore('files', {
     async fetchFiles() {
       this.loading = true
 
+      this.fetchPublicURL()
       const { data, error } = await supabase.storage.from('avatars').list();
       
       if (error) {
@@ -67,14 +68,33 @@ export const useFilesStore = defineStore('files', {
         return []
       }
 
-      // this.files = data.map(el => {
-      //   if (isDOC(el.metadata.mimetype)) {
-      //     el.src = 'https://cdn-icons-png.flaticon.com/512/5968/5968517.png'
-      //   }
-      //   if (isPDF(el.metadata.mimetype)) {
-      //     el.src = 'https://cdn-icons-png.flaticon.com/512/4726/4726010.png'
-      //   }        
-      // })
+      this.files = data.map(el => {
+        // console.log(el)
+        if (isDOC(el.metadata.mimetype)) {
+          return {
+            ...el,
+            src: 'https://cdn-icons-png.flaticon.com/512/5968/5968517.png'
+          }
+        }
+        if (isPDF(el.metadata.mimetype)) {
+          return {
+            ...el,
+            src: 'https://cdn-icons-png.flaticon.com/512/4726/4726010.png'
+          }
+        } 
+        if (isAudio(el.metadata.mimetype)) {
+          return {
+            ...el,
+            src: 'https://cdn-icons-png.flaticon.com/256/4287/4287943.png'
+          }
+        }        
+        return {
+          ...el,
+          src: this.publicURL+el.name
+        }
+      })
+      // this.files = data
+      console.log(this.files, this.publicURL)
 
       this.loading = false
 

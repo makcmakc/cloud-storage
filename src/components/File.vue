@@ -36,7 +36,8 @@ interface AlbumArtworkProps {
   album: Album
   aspectRatio?: 'portrait' | 'square'
   width?: number
-  height?: number
+  height?: number,
+  src?: string
 }
 
 withDefaults(defineProps<AlbumArtworkProps>(), {
@@ -55,7 +56,7 @@ withDefaults(defineProps<AlbumArtworkProps>(), {
   <div :class="cn('space-y-3 relative w-full p-2 xs:w-[150px] overflow-hidden')" v-else>
     <ContextMenu>
       <ContextMenuTrigger>
-        <div v-if="isImage(album.metadata.mimetype)" class="overflow-hidden card rounded-md relative">
+        <div class="overflow-hidden card rounded-md relative">
           <div :class="cn('relative w-full xs:w-[150px] relative')" v-if="album.uploading">
             <img
             :src="album.src"
@@ -94,60 +95,20 @@ withDefaults(defineProps<AlbumArtworkProps>(), {
 
                 </svg>
             </div>
-          </div>      
-          <img v-else
+          </div>
+          <video v-if="isVideo(album.metadata.mimetype)"
+            controls
             :src="filesStore.getPublicURL+album.name"
+            :class="cn('card-image w-auto object-contain', aspectRatio === 'portrait' ? 'aspect-[3/4]' : 'aspect-square',)">
+          </video>
+          <img v-else
+            :src="album.src"
             :alt="album.name"
             :width="width"
             :height="height"
-            :data-status="album.uploading"
             :class="cn('card-image h-auto w-auto object-contain', aspectRatio === 'portrait' ? 'aspect-[3/4]' : 'aspect-square')"
           >
         </div>
-        <div v-if="isVideo(album.metadata.mimetype)" class="card relative">
-          <!-- <div class="relative h-full w-full"> -->
-            <video controls :src="filesStore.getPublicURL+album.name"           :class="cn(
-              'card-image w-auto object-contain',
-              aspectRatio === 'portrait' ? 'aspect-[3/4]' : 'aspect-square',
-            )"></video>
-          <!-- </div> -->
-        </div>
-        <div v-if="isDOC(album.metadata.mimetype)" class="overflow-hidden p-4 card rounded-md relative">
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/5968/5968517.png"
-            :alt="album.name"
-            :width="width"
-            :height="height"
-            :class="cn(
-              'card-image w-auto object-contain',
-              aspectRatio === 'portrait' ? 'aspect-[3/4]' : 'aspect-square',
-            )"
-          >
-        </div>
-        <div v-if="isPDF(album.metadata.mimetype)" class="overflow-hidden p-4 card rounded-md relative">
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/4726/4726010.png"
-            :alt="album.name"
-            :width="width"
-            :height="height"
-            :class="cn(
-              'card-image w-auto object-contain',
-              aspectRatio === 'portrait' ? 'aspect-[3/4]' : 'aspect-square',
-            )"
-          >
-        </div>          
-        <div v-if="isAudio(album.metadata.mimetype)" class="overflow-hidden p-4 card rounded-md relative">
-          <img
-            src="https://cdn-icons-png.flaticon.com/256/4287/4287943.png"
-            :alt="album.name"
-            :width="width"
-            :height="height"
-            :class="cn(
-              'card-image h-auto w-auto object-cover',
-              aspectRatio === 'portrait' ? 'aspect-[3/4]' : 'aspect-square',
-            )"
-          >
-        </div>        
       </ContextMenuTrigger>
       <ContextMenuContent class="w-40">
         <ContextMenuItem>
