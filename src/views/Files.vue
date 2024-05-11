@@ -43,7 +43,7 @@
             </DropdownMenu>
           </div> 
         </div>
-        <UploadButton />
+        <UploadButtonUppy />
       </div>
   </div>
 
@@ -148,6 +148,7 @@ import { ref, computed } from 'vue';
 import { useFilesStore } from '@/stores/files' 
 
 import UploadButton from '../components/UploadButton.vue';
+import UploadButtonUppy from '../components/UploadButtonUppy.vue';
 
 import { onMounted } from "vue"
 

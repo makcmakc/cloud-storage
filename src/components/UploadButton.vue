@@ -23,7 +23,7 @@
 import { Upload } from 'lucide-vue-next';
 import { useMediaQuery } from '@vueuse/core'
 import { supabase } from '@/services/supabaseClient'
-import { defineEmits } from 'vue';
+// import { defineEmits } from 'vue';
 import { cn } from '@/lib/utils'
 import { buttonVariants } from '@/components/ui/button'
 import { useToast } from '@/components/ui/toast/use-toast'
@@ -45,11 +45,49 @@ const isDesktop = useMediaQuery('(min-width: 768px)')
 
 const projectId = 'dmlhcuolooluzgphdomp'
 
+// console.log(jsmediatags, 'jsmediatags')
+
+
+function awaitableJsmediatags(file) {
+  return new Promise(function(resolve, reject) {
+    // @ts-ignore: Unreachable code error
+    jsmediatags.read(file, {
+      onSuccess: function(tag: object) {
+        resolve(tag.tags);
+      },
+      onError: function(error) {
+        reject(error);
+      }
+    });
+  });
+}
+
+
 // Function for uploading files
 async function uploadFile(file: File) {
   const { data: { session } } = await supabase.auth.getSession()
 
   filesStore.setUploadingFiles(file)
+
+  // let audioInfo = {}
+
+    // @ts-ignore: Unreachable code error
+  let tags = await awaitableJsmediatags(file);
+  // console.log('TAGS L ', tags)
+
+  const album = tags?.album
+  const artist = tags?.artist
+  const title = tags?.title
+  const year = tags?.year
+  let url = null
+
+  const image = tags?.picture
+
+  if (image) {
+    const blob = new Blob([new Uint8Array(image.data)], { type: image.format });
+    // url = URL.createObjectURL(blob);
+    url = blob;
+  }
 
   return new Promise<void>((resolve, reject) => {
     const upload = new tus.Upload(file, {
@@ -67,6 +105,12 @@ async function uploadFile(file: File) {
           objectName: file.name,
           contentType: file.type,
           cacheControl: '3600',
+          // test: 'asdasdasdas',
+          // album: tags?.album,
+          // artist: tags?.artist,
+          // title: tags?.title,
+          // year: tags?.year,
+          // blobUrl: url
         },
         onError: function (error) {
           console.log('Failed because: ' + error)
