@@ -2,7 +2,7 @@
   <header class="sticky z-40 top-0 bg-background/80 backdrop-blur-lg border-b border-border">
     <div class="px-4 flex h-14 items-center">
 
-    <Sheet>
+    <Sheet v-if="isDesktop">
       <SheetTrigger as-child>
         <Button
           variant="outline"
@@ -110,7 +110,7 @@
       </SheetContent>
     </Sheet>   
 
-      <div class="mr-4 md:mr-1 hidden md:flex">
+      <div class="mr-4 md:mr-24 hidden md:flex shrink-0">
         <router-link to="/" class="relative z-20 flex items-center text-lg font-medium">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -128,7 +128,52 @@
         </router-link>
       </div>
 
-      <div class="flex flex-1 items-center justify-between space-x-2 md:justify-end">
+
+      <div class="border-solid border-l-[1px] border-r-[1px] border-border w-full h-full mx-10 px-8">
+        <div class="w-full h-full justify-center flex items-center">
+
+
+        <audio
+          autoplay
+          ref="audioPlayer"
+          src="https://dmlhcuolooluzgphdomp.supabase.co/storage/v1/object/public/avatars/Ysa_Ferrer_-_Made_in_Japan_48275178.mp3"
+        ></audio>
+
+          <div class="mr-2 flex items-center">
+            <div class="flex gap-4">
+              <SkipBack :size="22" />
+              <CirclePlay :size="22" class="cursor-pointer" @click="playHandler" v-if="!isPlaying" />
+              <CirclePause :size="22" class="cursor-pointer" @click="playHandler" v-else />
+              <SkipForward :size="22" />
+            </div>
+          </div>
+
+          <div class="w-full px-8 flex flex-col items-center">
+
+            <div class="-mb-2 mt-7">Made in Japan - Ysa Ferrer</div>
+
+            <div class="flex w-full items-center mb-4">
+              <span class="text-zinc-400 text-xs font-light mb-6">3:26</span>
+              <Slider v-model="progress" :max="100" :step="1" :class="cn('progress-slider mx-4', $attrs.class ?? '')" />
+              <span class="text-zinc-400 text-xs font-light mb-6">4:40</span>
+            </div>
+          </div>
+
+          <div class="flex w-1/6 items-center">
+
+            <VolumeX class="ml-4 mr-1" :size="20" v-if="progress[0] === 0" />
+            <Volume class="ml-4 mr-1" :size="20" v-else-if="progress[0] < 20" />
+            <Volume1 class="ml-4 mr-1" :size="20" v-else-if="progress[0] < 50" />
+            <Volume2 class="ml-4 mr-1" :size="20" v-else />
+
+            <Slider v-model="progress" :max="100" :step="1" :class="cn('w-3/4 volume-slider', $attrs.class ?? '')" />
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="flex items-center justify-between space-x-2 md:justify-end">
         <nav class="flex items-center">
           <Button
             v-for="link in links"
@@ -142,20 +187,18 @@
             <component :is="link.icon" class="w-5 h-5" />
           </Button>
 
-          <ClientOnly>
-            <Button
-              class="w-9 h-9"
-              aria-label="Toggle dark mode"
-              :variant="'ghost'"
-              :size="'icon'"
-              @click="toggleDark()"
-            >
-              <component
-                :is="isDark ? Sun : Moon"
-                class="w-5 h-5 text-foreground"
-              />
-            </Button>
-          </ClientOnly>
+          <Button
+            class="w-9 h-9"
+            aria-label="Toggle dark mode"
+            :variant="'ghost'"
+            :size="'icon'"
+            @click="toggleDark()"
+          >
+            <component
+              :is="isDark ? Sun : Moon"
+              class="w-5 h-5 text-foreground"
+            />
+          </Button>
         </nav>
       </div>
     </div>
@@ -167,13 +210,41 @@ import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { Progress } from '@/components/ui/progress'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { Slider } from '@/components/ui/slider'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 
 import { ChevronDown, File, Menu, Moon, Files, Sun, Github, Images, Image, Music4, FileVideo, ListMusic, BookImage } from 'lucide-vue-next';
 import SidebarNav from '@/components/SidebarNav.vue'
+// import Player from '@/components/Player.vue'
 
+
+
+
+import { Volume, Volume1, Volume2, VolumeX, SkipBack, SkipForward, CirclePause, Play, Heart, CirclePlay  } from 'lucide-vue-next';
+  
 import { useDark, useToggle } from '@vueuse/core'
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { cn } from '@/lib/utils' 
+
+
+const audioPlayer = ref<HTMLAudioElement>();
+const isPlaying= ref(false)
+
+const playHandler = () => {
+  isPlaying.value = !isPlaying.value
+  if (isPlaying.value) {
+    audioPlayer.value?.play()
+  } else {
+    audioPlayer.value?.pause()
+  }
+}
+
+// onMounted(() => {
+//       console.log(audioPlayer.value);
+//       //@ts-ignore
+//       audioPlayer.value?.play()
+//     });
+
 
 const isDark = useDark({
   selector: 'html',
@@ -183,10 +254,11 @@ const isDark = useDark({
 })
 const toggleDark = useToggle(isDark)
 
+const isDesktop = ref(false)
 
 const isPlaylistsOpen = ref(true)
 const isAlbumsOpen = ref(true)
-const progress = ref(13)
+const progress = ref([53])
 
 const links = [
   {
@@ -232,3 +304,52 @@ const nav = [
   },
 ]
 </script>
+
+<style lang="scss">
+.progress-slider {
+  > span {
+    height: 0.25rem;
+
+    // > span {
+    //   // background-color: rgb(16 185 129);
+    // }
+  }
+
+  &:hover {
+    > div {
+      opacity: 1;
+    }
+  }
+
+  > div {
+    // background-color: rgb(16 185 129);
+    // border: none;
+    width: 0.75rem; /* 14px */
+    height: 0.75rem; /* 14px */
+    // border-width: 2px;
+    // display: none;
+    // opacity: 0;
+    // transition: opacity .25s ease;
+    border-width: 7px;
+    cursor: pointer;
+  }  
+}
+
+.volume-slider {
+  > span {
+    height: 0.25rem;
+    // background-color: red;
+
+    > span {
+      // background: yellow;
+    }
+  }
+
+  > div {
+    width: 0.75rem; /* 14px */
+    height: 0.75rem; /* 14px */
+    border-width: 7px;
+    cursor: pointer;
+  }
+}
+</style>
