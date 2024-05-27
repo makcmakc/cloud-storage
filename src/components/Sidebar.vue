@@ -56,8 +56,8 @@ const links = [
 </script>
 
 <template>
-
-  <div :class="cn('pb-4', $attrs.class ?? '')" class="md:flex hidden">
+<!-- :class="cn('pb-4', $attrs.class ?? 'w-[300px]')" class="md:flex hidden" -->
+  <div class="min-w-56">
 
     <div class="space-y-4 py-4">
       <div class="px-3 py-2">

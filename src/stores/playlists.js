@@ -14,6 +14,7 @@ export const usePlaylistStore = defineStore('playlist', {
     changingSong: false,
     audio: null,
     currentPlaylist: null,     
+    
   }),
   getters: {
     getLoading: state => state.loading,
