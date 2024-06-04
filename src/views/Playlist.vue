@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4 pb-8">{{  currentTrack  }}</div>
+  <!-- <div class="p-4 pb-8">{{  currentTrack  }}</div> -->
   <div class="gap-4 grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))]">
     <AudioCard
       v-for="album in madeForYouAlbums"

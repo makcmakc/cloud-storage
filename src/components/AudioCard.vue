@@ -52,13 +52,15 @@ const isPlaying = computed({
 
 const playback = ref(0)
 
+const current = ref()
+
 const currentTrack = computed(() => {
   return playerStore.getCurrentTrack
 })
 
 const toggleIcon = computed(() => {
-  // return isPlaying.value ? CirclePause : CirclePlay
-  return isPlaying.value ? 'pause-circle.svg' : 'play-circle.svg'
+  return (!isPlaying.value || currentTrack.value !== current.value?.url) ? CirclePlay : CirclePause
+  // return isPlaying.value ? 'pause-circle.svg' : 'play-circle.svg'
 })
 
 const currentTime = computed(() => {
@@ -69,26 +71,29 @@ const duration = computed(() => {
   return playerStore.getDurationSeconds
 })
 
-watch(currentTime, (v) => {
-  playback.value = Math.round([(currentTime.value / duration.value) * 100])
+// watch(currentTime, (v) => {
+//   playback.value = Math.round([(currentTime.value / duration.value) * 100])
+// })
+
+watch(current, (v) => {
+  // console.log(v)
+  // playerStore.setCurrentTrack(v)
 })
 
 const playHandler = (track: object) => {
   isPlaying.value = !isPlaying.value
 
-  // console.log(album)
 
-  if (!currentTrack.value || props.album.url !== currentTrack.value)
-    playerStore.setCurrentTrack(track)
-  // console.log(currentTrack.value)
+  if (current.value !== currentTrack.value) {
+    current.value = track
+  } 
+
+  playerStore.setCurrentTrack(track)
+
 
   if (!playerStore.getAudio) {
     playerStore.initAudio()
   }
-
-  // if (playerStore.getCurrentTrack)
-
-  // console.log(playerStore.getCurrentTrack, 'sdklasnd')
 
   if (isPlaying.value) playerStore.playTrack()
   else playerStore.pauseTrack()
@@ -128,7 +133,7 @@ const circumference = 2 * 16 * Math.PI;
               justify-content: center;
             "
             class="overflow-hidden rounded-xl border bg-card text-card-foreground shadow p-4 card rounded-md relative"
-          >
+            >
             <svg
               height="100%"
               fill="#FAFAFA"
@@ -153,6 +158,7 @@ const circumference = 2 * 16 * Math.PI;
               </g>
             </svg>
           </div>
+
           <div
             class="card-action is-playing p-10"
             :class="{ 'is-playing': isPlaying && album.url == currentTrack }"
@@ -197,11 +203,11 @@ const circumference = 2 * 16 * Math.PI;
             <!-- <div v-if="!currentTrack.url"> -->
             <!-- v-if="isPlaying && currentTrack === album.url" -->
 
-            <img src="@/assets/icons/play-circle.svg" class="cursor-pointer" @click="playHandler(album)" alt="" v-if="!isPlaying && !currentTrack">
-            <img src="@/assets/icons/pause-circle.svg" class="cursor-pointer" @click="playHandler(album)" alt="" v-else-if="isPlaying && album.url == currentTrack">
+            <!-- <img src="@/assets/icons/play-circle.svg" class="cursor-pointer" @click="playHandler(album)" alt="" v-if="!isPlaying && !currentTrack">
+            <img src="@/assets/icons/pause-circle.svg" class="cursor-pointer" @click="playHandler(album)" alt="" v-else-if="isPlaying && album.url == currentTrack"> -->
 
             <!-- <img src="@/assets/icons/play-circle.svg" class="cursor-pointer" @click="playHandler(album)" alt="" v-else> -->
-            <!-- <component color="#fff" :is="toggleIcon" @click="playHandler(album)" :size="42" class="cursor-pointer" /> -->
+            <component color="#fff" :is="toggleIcon" @click="playHandler(album)" :size="42" class="cursor-pointer" />
 
             <!-- <CirclePlay class="cursor-pointer" @click="playHandler(album)" color="#fff" :size="42" /> -->
           </div>

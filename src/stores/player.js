@@ -32,7 +32,6 @@ export const usePlayerStore = defineStore('player', {
     getPublicURL: state => state.publicURL,
     getPlaylists: state => state.playlists,
 
-    // gettracks: state => state.tracks
     getCurrentTrack: state => state.currentTrack,
 
     getPlayback: state => state.playback,
@@ -50,9 +49,15 @@ export const usePlayerStore = defineStore('player', {
     },
 
     setCurrentTrack(track) {
-      // this.isPlaying = true
+      if (this.audio && this.currentTrack !== track.url) {
+        this.currentTrack = track.url
+        this.audio.src = this.currentTrack
+        this.audio.load()
+        this.playTrack()
+        return
+      }
+
       this.currentTrack = track.url
-      // this.pauseTrack()
     },
 
     setAudioState(payload) {
@@ -97,7 +102,6 @@ export const usePlayerStore = defineStore('player', {
 
     setPlayback(payload) {
       this.playback = payload
-      // console.log(payload)
       this.audio.currentTime = payload * this.durationSeconds / 100
     },
 
@@ -112,10 +116,6 @@ export const usePlayerStore = defineStore('player', {
       this.currentSeconds = payload[0] * this.durationSeconds / 100
     },
 
-    // setTime() {
-    //   this.audio.currentTime = this.currentSeconds
-    // },
-
     pauseTrack() {
       this.isPlaying = false
       this.audio.pause();
@@ -125,60 +125,5 @@ export const usePlayerStore = defineStore('player', {
       this.isPlaying = true
       this.audio.play();     
     },
-
-    // updateProgress() {
-
-    // },
-
-    // playTrack() {
-    //   if (this.changingSong && this.audio) {
-    //     this.audio.pause();
-    //   }
-    //   if (this.audio === null || this.changingSong) {
-    //     this.audio = new Audio(this.currentTrack.url);
-    //   }
-    //   if (this.currentTrack) {
-    //     if (this.isPlaying === false) {
-    //       this.audio.play();
-    //     } else {
-    //       this.audio.pause();
-    //     }
-    //   }
-    //   this.isPlaying = !this.isPlaying;
-    //   this.changingSong = false;      
-    // },
-
-    async fetchPlaylists() {
-      this.loading = true
-
-      const { data, error } = await supabase.storage
-        .from('avatars')
-        .list();
-      
-      if (error) {
-        console.log(error)
-        return []
-      }
-
-      this.playlists = data.reduce((acc, el) => {
-        if (isAudio(el.metadata?.mimetype)) acc.push(el)
-          return acc
-      }, [])
-  
-      this.loading = false
-
-      return this.playlists
-    },
-
-    async fetchPublicURL() {
-      const { data, error } = supabase
-        .storage
-        .from('avatars')
-        .getPublicUrl('/')
-
-      if (error) console.log(error)
-
-      this.publicURL = data.publicUrl
-    },    
   }
 })

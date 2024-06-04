@@ -34,22 +34,22 @@ export const listenNowAlbums: Album[] = [
 
 export const madeForYouAlbums: Album[] = [
   {
-    name: 'Thinking Components',
-    artist: 'Lena Logic',
+    name: 'Made in Japan',
+    artist: 'Ysa Ferrer',
     url: 'https://dmlhcuolooluzgphdomp.supabase.co/storage/v1/object/public/avatars/Ysa_Ferrer_-_Made_in_Japan_48275178.mp3',
     cover:
       'https://images.unsplash.com/photo-1615247001958-f4bc92fa6a4a?w=300&dpr=2&q=80',
   },
+  // {
+  //   name: 'Functional Fury',
+  //   artist: 'Beth Binary',
+  //   url: 'https://dmlhcuolooluzgphdomp.supabase.co/storage/v1/object/public/avatars/despair.mp3',
+  //   cover:
+  //     'https://images.unsplash.com/photo-1513745405825-efaf9a49315f?w=300&dpr=2&q=80',
+  // },
   {
-    name: 'Functional Fury',
-    artist: 'Beth Binary',
-    url: 'https://dmlhcuolooluzgphdomp.supabase.co/storage/v1/object/public/avatars/despair.mp3',
-    cover:
-      'https://images.unsplash.com/photo-1513745405825-efaf9a49315f?w=300&dpr=2&q=80',
-  },
-  {
-    name: 'Functional Fury',
-    artist: 'Beth Binary',
+    name: 'Despair',
+    artist: 'TOHA',
     url: 'https://dmlhcuolooluzgphdomp.supabase.co/storage/v1/object/public/avatars/despair.mp3',
     cover: ''
   },  
