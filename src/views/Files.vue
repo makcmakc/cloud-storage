@@ -1,4 +1,6 @@
 <template>
+
+  <!-- DESKTOP -->
   <div class="space-between md:flex items-center hidden">
     
       <div class="flex items-center justify-between w-full">

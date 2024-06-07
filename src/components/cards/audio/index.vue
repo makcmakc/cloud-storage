@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import type { Album } from './albums'
-import { playlists } from './playlists'
+import type { Album } from '../albums'
+import { playlists } from '../playlists'
 import { cn } from '@/lib/utils'
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuSub, ContextMenuSubContent, ContextMenuSubTrigger, ContextMenuTrigger } from '@/components/ui/context-menu'
-
 import { Skeleton } from '@/components/ui/skeleton'
 
 import { Heart, ListMusic } from 'lucide-vue-next'
