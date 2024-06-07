@@ -8,7 +8,8 @@ import { ScrollArea } from '@/components/ui/scroll-area'
   <Header></Header>
 
   <main class="flex h-full">
-    <Sidebar class="pb-4 w-[300px] md:flex flex-col hidden"/>
+    <!-- pb-4 w-[300px] md:flex flex-col hidden -->
+    <Sidebar />
 
     <ScrollArea class="w-full h-full p-4 md:border-l">
       <RouterView></RouterView>

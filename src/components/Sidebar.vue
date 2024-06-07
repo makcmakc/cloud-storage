@@ -56,19 +56,20 @@ const links = [
 </script>
 
 <template>
+<!-- :class="cn('pb-4', $attrs.class ?? 'w-[300px]')" class="md:flex hidden" -->
+  <div class="min-w-56">
 
-  <div :class="cn('pb-4', $attrs.class ?? '')" class="md:flex hidden">
     <div class="space-y-4 py-4">
       <div class="px-3 py-2">
         <h2 class="mb-2 px-4 text-lg font-semibold tracking-tight">
-          Discover
+          Browse
         </h2>
         <div>
-          <SidebarNav :is-collapsed="isCollapsed" :links="links"/>
+          <SidebarNav :links="links"/>
         </div>
       </div>
 
-      <div class="py-2">
+      <!-- <div class="py-2">
         <h2 class="relative px-7 text-lg font-semibold tracking-tight">
           Playlists
         </h2>
@@ -119,10 +120,10 @@ const links = [
             </Button>
           </div>
         </ScrollArea>
-      </div>
+      </div> -->
     </div>
 
-    <div class="mt-auto p-4">
+    <!-- <div class="mt-auto p-4">
         <Collapsible v-model:open="isOpen" class="flex flex-col items-start gap-2 rounded-lg border p-4">
           <CollapsibleTrigger class="flex items-center justify-between w-full">
             <span class="text-base text-muted-foreground">Storage size</span>
@@ -162,7 +163,7 @@ const links = [
             Used 1.3gb from 4gb
           </div>
         </Collapsible>
-      </div>    
+    </div>     -->
   </div>
 </template>
 
