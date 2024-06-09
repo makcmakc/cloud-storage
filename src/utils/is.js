@@ -5,3 +5,10 @@ export const isAudio = ext => ["audio/mpeg"].includes(ext)
 
 export const isPDF = ext => ["application/pdf"].includes(ext)
 export const isDOC = ext => ["application/msword"].includes(ext)
+
+export const defineType = ext => {
+  if (isImage(ext)) return 'image'
+  if (isVideo(ext)) return 'video'
+  if (isDocument(ext)) return 'document'
+  if (isAudio(ext)) return 'audio'
+}
