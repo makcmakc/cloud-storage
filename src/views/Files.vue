@@ -125,6 +125,7 @@
   </div>
 
   <Separator class="my-4" />
+  
 
   <div class="gap-6 grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))]" v-if="!loading">
     <component
@@ -132,8 +133,6 @@
       :is="card(file)"
       :key="idx"
       :file="file"
-      @load="loadHandler"
-      v-show="!fileLoaded"
     />      
   </div>
   <div class="relative w-full flex" v-else>
@@ -154,10 +153,8 @@ import { FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer'
 import { Separator } from '@/components/ui/separator'
-import { Skeleton } from '@/components/ui/skeleton'
 
 import { EllipsisVertical, Plus, Upload, FolderPlus } from 'lucide-vue-next';
-
 
 import { useFilesStore } from '@/stores/files' 
 
@@ -168,8 +165,6 @@ import ImageCard from '../components/cards/image/index.vue'
 import VideoCard from '../components/cards/video/index.vue'
 import DocumentCard from '../components/cards/document/index.vue'
 
-import { isVideo, isImage, isDocument, isAudio } from "@/utils/is.js"
-
 
 const viewBy = ref('tile')
 const sortBy = ref('name')
@@ -179,13 +174,6 @@ const filesStore = useFilesStore()
 
 const loading = computed(() => filesStore.getLoading)
 
-const fileLoaded = ref()
-
-const loadHandler = (e: Boolean) => {
-  console.log('Loading: ', e)
-  fileLoaded.value = e
-}
-
 const cards = {
   image: ImageCard,
   audio: AudioCard,
@@ -194,18 +182,7 @@ const cards = {
 }
 
 const card = (file: object) => {
-  const type = file?.metadata?.mimetype
-
   return cards[file.type]
-
-  // if (isAudio(type)) return AudioCard
-  // if (isImage(type)) return ImageCard
-  // if (isVideo(type)) return VideoCard
-  // if (isDocument(type)) return DocumentCard
-
-
-
-  // return null
 }
 
 onMounted(async () => {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// import type { Album } from '../../albums'
+import type { File } from '@/types/file'
 import { cn } from '@/lib/utils'
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuTrigger } from '@/components/ui/context-menu'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -9,21 +9,15 @@ import { useFilesStore } from '@/stores/files'
 import { truncateString } from '@/utils/truncateString'
 import { computed, ref } from 'vue'
 
-interface File {
-  name: string
-  artist: string
-  cover: string
-}
-
 interface FileProps {
   file: File
 }
 
+defineProps<FileProps>()
+
 const loading = ref(true)
 const filesStore = useFilesStore()
 const publicURL = computed(() => filesStore.getPublicURL)
-
-defineProps<FileProps>()
 
 const loadedHandler = () => loading.value = false
 </script>
@@ -43,8 +37,6 @@ const loadedHandler = () => loading.value = false
           <img
             :src="publicURL+file.name"
             :alt="file.name"
-            :width="width"
-            :height="height"
             @load="loadedHandler"
             class="card-image h-auto w-auto object-contain aspect-square"
           >
