@@ -11,6 +11,7 @@ import { Heart, ListMusic } from 'lucide-vue-next'
 import { usePlayerStore } from '@/stores/player'
 import { computed, ref, toRef } from 'vue'
 
+const playerStore = usePlayerStore()
 
 interface AlbumArtworkProps {
   album: Album
@@ -19,13 +20,12 @@ interface AlbumArtworkProps {
   height?: number
 }
 
-const playerStore = usePlayerStore()
-
 const props = withDefaults(defineProps<AlbumArtworkProps>(), {
   aspectRatio: 'portrait'
 })
 
 toRef(props, 'album')
+
 
 const isPlaying = computed({
   get() {

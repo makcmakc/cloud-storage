@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { supabase } from '@/services/supabaseClient'
 // import { handleError } from '@/utils/handleError'
-import { isAudio } from "@/utils/is.js"
+// import { isAudio } from "@/utils/is.js"
 
 export const usePlayerStore = defineStore('player', {
   state: () => ({
@@ -49,6 +49,9 @@ export const usePlayerStore = defineStore('player', {
     },
 
     setCurrentTrack(track) {
+      // const trackUrl = this.publicURL+track.name
+      // console.log(trackUrl)
+
       if (this.audio && this.currentTrack !== track.url) {
         this.currentTrack = track.url
         this.audio.src = this.currentTrack
@@ -56,6 +59,8 @@ export const usePlayerStore = defineStore('player', {
         this.playTrack()
         return
       }
+
+      // console.log(track)
 
       this.currentTrack = track.url
     },
@@ -122,6 +127,7 @@ export const usePlayerStore = defineStore('player', {
     },
 
     playTrack() {
+      // console.log(this.audio, 'audio')
       this.isPlaying = true
       this.audio.play();     
     },
