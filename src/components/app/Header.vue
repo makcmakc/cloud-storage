@@ -2,7 +2,7 @@
   <header class="sticky z-40 top-0 bg-background/80 backdrop-blur-lg border-b border-border">
     <div class="px-4 flex justify-between h-14 items-center">
 
-      <Sheet v-if="isDesktop">
+      <Sheet v-if="!isDesktop">
         <SheetTrigger as-child>
           <Button
             variant="outline"
@@ -127,39 +127,6 @@
           Meme Inc
         </router-link>
       </div>
-
-      <!-- <div class="max-w-7xl w-full mx-auto">
-        <Player :album="album" aspect-ratio="square" :width="150" :height="150" />
-      </div> -->
-
-      <!-- <div class="flex items-center justify-between space-x-2 md:justify-end">
-        <nav class="flex items-center">
-          <Button
-            v-for="link in links"
-            :key="link.name"
-            as="a"
-            class="w-9 h-9 md:flex hidden"
-            :href="link.href" target="_blank"
-            :variant="'ghost'"
-            :size="'icon'"
-          >
-            <component :is="link.icon" class="w-5 h-5" />
-          </Button>
-
-          <Button
-            class="w-9 h-9"
-            aria-label="Toggle dark mode"
-            :variant="'ghost'"
-            :size="'icon'"
-            @click="toggleDark()"
-          >
-            <component
-              :is="isDark ? Sun : Moon"
-              class="w-5 h-5 text-foreground"
-            />
-          </Button>
-        </nav>
-      </div> -->
     </div>
   </header>  
 </template>
@@ -202,7 +169,7 @@ const options = reactive({
 import { reactify, useDark, useToggle } from '@vueuse/core'
 import { onMounted, ref, reactive } from 'vue';
 // import { cn } from '@/lib/utils' 
-
+import { useMediaQuery } from '@vueuse/core'
 
 const isDark = useDark({
   selector: 'html',
@@ -212,7 +179,7 @@ const isDark = useDark({
 })
 const toggleDark = useToggle(isDark)
 
-const isDesktop = ref(false)
+const isDesktop = useMediaQuery('(min-width: 768px)')
 
 const links = [
   {

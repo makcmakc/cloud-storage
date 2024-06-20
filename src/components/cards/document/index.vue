@@ -7,7 +7,7 @@ import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator,
 import { Share, ImagePlus, Download, FilePenLine, Copy, Trash } from 'lucide-vue-next';
 
 import { truncateString } from '@/utils/truncateString'
-import { isDOC, isPDF } from "@/utils/is.js"
+import { isDOC, isPDF } from "@/utils/is.ts"
 
 interface FileProps {
   file: File

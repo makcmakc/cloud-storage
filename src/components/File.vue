@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { Album } from './albums'
-import { playlists } from './playlists'
-import PlusCircledIcon from '~icons/radix-icons/plus-circled'
+// import { playlists } from './playlists'
 import { cn } from '@/lib/utils'
-import { isVideo, isImage, isDocument, isDOC, isPDF, isAudio } from "@/utils/is.js"
+import { isVideo, isImage, isDocument, isDOC, isPDF, isAudio } from "@/utils/is.ts"
 import {
   ContextMenu,
   ContextMenuCheckboxItem,

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { supabase } from '@/services/supabaseClient'
 // import { handleError } from '@/utils/handleError'
-import { isAudio } from "@/utils/is.js"
+import { isAudio } from "@/utils/is.ts"
 
 export const usePlaylistStore = defineStore('playlist', {
   state: () => ({
