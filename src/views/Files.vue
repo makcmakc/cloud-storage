@@ -43,10 +43,11 @@
           </DropdownMenu>
         </div> 
       </div>
-      <Button>
+      <!-- <Button>
         <Upload class="mr-2 h-4 w-4" />
         Upload file
-      </Button>
+      </Button> -->
+      <UploadButton />
     </div>
   </div>
 
@@ -157,6 +158,9 @@ import { Separator } from '@/components/ui/separator'
 import { EllipsisVertical, Plus, Upload, FolderPlus } from 'lucide-vue-next';
 
 import { useFilesStore } from '@/stores/files' 
+
+// import UploadButton from '../components/Upload.vue'
+import UploadButton from '../components/Upload.vue'
 
 // cards
 import File from '../components/File.vue'
