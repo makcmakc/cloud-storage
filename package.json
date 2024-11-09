@@ -29,7 +29,6 @@
     "vaul-vue": "^0.1.0",
     "vee-validate": "^4.12.6",
     "vue": "^3.4.21",
-    "vue-class-component": "^7.2.6",
     "vue-easy-lightbox": "^1.19.0",
     "vue-router": "^4.3.0",
     "zod": "^3.22.4"
