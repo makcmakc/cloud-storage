@@ -1,60 +1,40 @@
-# cloud-storage
+## Introduction
+A small Web Storage application using `vue3`, `vite`, `Shadcn UI`, `TypeScript`, `Supabase`.
 
-This template should help get you started developing with Vue 3 in Vite.
+## Install and use
 
-## Recommended IDE Setup
+- Get the project code
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+```bash
+git clone https://github.com/makcmakc/cloud-storage.git
+```
 
-## Customize configuration
+- Installation dependencies
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+```bash
+cd cloud-storage
 
-## Project Setup
-
-```sh
 pnpm install
 ```
 
-### Compile and Hot-Reload for Development
+- run
 
-```sh
+```bash
 pnpm dev
 ```
 
-### Compile and Minify for Production
+- build
 
-```sh
+```bash
 pnpm build
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+## Postscript
 
-```sh
-pnpm test:unit
-```
+This shit is mainly coding with the following albums:
 
-### Run End-to-End Tests with [Playwright](https://playwright.dev)
+ * [Smashing Pumpkins - Siamese Dream ](https://www.youtube.com/watch?v=VbrfXDFuzu0&list=PL0D8442F129C22C6E)
+ * [Deftones - Koi No Yokan ](https://www.youtube.com/watch?v=uWsD4LDRwyc&list=PLrnz4iRZQNldio5luUrpD-z6sYkokRhhq&ab_channel=Deftones-Topic)
+ * [Lana Del Rey - Born To Die ](https://www.youtube.com/watch?v=L34wcarloaA&list=PLFAcddgaFN8zbOtM8heHITUg5d1zK2atJ&index=1&ab_channel=LanaDelRey-Topic)
 
-```sh
-# Install browsers for the first run
-npx playwright install
-
-# When testing on CI, must build the project first
-pnpm build
-
-# Runs the end-to-end tests
-pnpm test:e2e
-# Runs the tests only on Chromium
-pnpm test:e2e --project=chromium
-# Runs the tests of a specific file
-pnpm test:e2e tests/example.spec.ts
-# Runs the tests in debug mode
-pnpm test:e2e --debug
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-pnpm lint
-```
+ 
