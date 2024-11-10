@@ -47,20 +47,15 @@ const router = createRouter({
           component: () => import('../views/auth/AuthCreate.vue')          
         }           
       ]
-    },
-    // {
-    //   path: '/auth',
-    //   name: 'auth',
-    //   component: () => import('../views/Auth.vue')
-    // }    
+    },  
   ]
 })
 
 // router.beforeEach((to, from, next) => {
 //   const authStore = useAuthStore()
 
-//   if (to.path !== '/auth' && !authStore.user) {
-//     next('/auth')
+//   if (to.path !== '/login' && !authStore.user) {
+//     next('/login')
 //   } else {
 //     next()
 //   }

@@ -3,45 +3,48 @@
   <div class="space-between md:flex items-center hidden">    
     <div class="flex items-center justify-between w-full">
       <div class="space-y-1">
-        <div class="gap-1 inline-flex items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground">
-          <DropdownMenu>
-            <DropdownMenuTrigger as-child>
-              <Button variant="outline" class="h-7 px-2">
-                Sort by
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent >
-              <DropdownMenuRadioGroup v-model="sortBy">
-                <DropdownMenuRadioItem value="name">
-                  Name
-                </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="size">
-                  Size
-                </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="date">
-                  Date
-                </DropdownMenuRadioItem>
-              </DropdownMenuRadioGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <DropdownMenu>
-            <DropdownMenuTrigger as-child>
-              <Button variant="outline" class="h-7 px-2">
-                View by
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuRadioGroup v-model="viewBy">
-                <DropdownMenuRadioItem value="tile">
-                  Tile
-                </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="list">
-                  List
-                </DropdownMenuRadioItem>
-              </DropdownMenuRadioGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div> 
+        <div class="gap-3 inline-flex items-center justify-center">
+          <SidebarTrigger class="size-5 text-muted-foreground" />
+          <div class="rounded-lg bg-muted p-1 text-muted-foreground">
+            <DropdownMenu>
+              <DropdownMenuTrigger as-child>
+                <Button variant="outline" class="h-7 px-2">
+                  Sort by
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent >
+                <DropdownMenuRadioGroup v-model="sortBy">
+                  <DropdownMenuRadioItem value="name">
+                    Name
+                  </DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="size">
+                    Size
+                  </DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="date">
+                    Date
+                  </DropdownMenuRadioItem>
+                </DropdownMenuRadioGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <DropdownMenu>
+              <DropdownMenuTrigger as-child>
+                <Button variant="outline" class="h-7 px-2">
+                  View by
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuRadioGroup v-model="viewBy">
+                  <DropdownMenuRadioItem value="tile">
+                    Tile
+                  </DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="list">
+                    List
+                  </DropdownMenuRadioItem>
+                </DropdownMenuRadioGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
       </div>
       <Button>
         <Upload class="mr-2 h-4 w-4" />
@@ -50,7 +53,7 @@
     </div>
   </div>
 
-    <!-- MOBILE -->
+  <!-- MOBILE -->
   <div class="md:hidden ml-auto mt-0">
     <div class="flex gap-2 justify-between">
     <h1 class="text-xl font-semibold	">Files</h1>
@@ -153,6 +156,7 @@ import { FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer'
 import { Separator } from '@/components/ui/separator'
+import { SidebarTrigger } from "@/components/ui/sidebar"
 
 import { EllipsisVertical, Plus, Upload, FolderPlus } from 'lucide-vue-next';
 

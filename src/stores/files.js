@@ -35,7 +35,7 @@ export const useFilesStore = defineStore('files', {
       this.files = data
         .map(el => ({...el, type: defineType(el.metadata.mimetype)} ))
 
-      console.log(this.files)
+      // console.log(this.files)
   
       this.loading = false
 
