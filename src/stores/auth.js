@@ -8,6 +8,9 @@ export const useAuthStore = defineStore('auth', {
     token: null,
     user: null,
   }),
+  getters: {
+    getUser: state => state.user,
+  },
   actions: {
     async signIn({ email = '', password = '' }) {
       const { data: { user, session }, error } = await supabase.auth.signInWithPassword({
