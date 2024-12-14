@@ -17,23 +17,21 @@ defineProps<props>()
 </script>
 
 <template>
-  <div :data-collapsed="isOpen">
-    <Tooltip v-if="!isOpen">
-      <TooltipTrigger as-child>
-        <RouterLink :to="link.route">
-          <component :is="link.icon" class="mr-2 size-4" />
-        </RouterLink>
-      </TooltipTrigger>
-      <TooltipContent side="right" class="flex items-center gap-4">
-        <RouterLink :to="link.route" class="flex">
-          {{ link.title }}
-        </RouterLink>
-      </TooltipContent>
-    </Tooltip>
+  <Tooltip v-if="!isOpen">
+    <TooltipTrigger as-child>
+      <RouterLink :to="link.route">
+        <component :is="link.icon" class="mr-2 size-4" />
+      </RouterLink>
+    </TooltipTrigger>
+    <TooltipContent side="right" class="flex items-center gap-4">
+      <RouterLink :to="link.route" class="flex items-center">
+        {{ link.title }}
+      </RouterLink>
+    </TooltipContent>
+  </Tooltip>
 
-    <RouterLink :to="link.route" class="flex" v-else>
-      <component :is="link.icon" class="mr-2 size-4" />
-      {{ link.title }}
-    </RouterLink>
-  </div>
+  <RouterLink :to="link.route" class="flex items-center w-full" v-else>
+    <component :is="link.icon" class="mr-2 size-4" />
+    {{ link.title }}
+  </RouterLink>
 </template>
