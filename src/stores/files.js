@@ -10,11 +10,16 @@ export const useFilesStore = defineStore('files', {
     files: [],
     photos: [],
     publicURL: '',
+    storageFilesSize: 0,
+    storageCapacity: 1000000000, // bytes
   }),
   getters: {
     getLoading: state => state.loading,
     getPublicURL: state => state.publicURL,
     getFiles: state => state.files,
+    getTotalFilesSize: state => state.storageFilesSize,
+    getStorageCapacity: state => state.storageCapacity,
+    getStorageVolume: state => Math.round(((state.storageFilesSize / state.storageCapacity) * 100)?.toFixed(2)) ?? 0,
   },
   actions: {
     setLoading(loading) {
@@ -22,6 +27,7 @@ export const useFilesStore = defineStore('files', {
     },
     async fetchFiles() {
       this.loading = true
+      this.storageFilesSize = 0
 
       const { data, error } = await supabase.storage
         .from('avatars')
@@ -33,9 +39,15 @@ export const useFilesStore = defineStore('files', {
       }
 
       this.files = data
-        .map(el => ({...el, type: defineType(el.metadata.mimetype)} ))
+        .map(el => {
+          this.storageFilesSize += el?.metadata?.size
 
-      // console.log(this.files)
+          return {
+            ...el,
+            type: defineType(el.metadata.mimetype)
+          }
+        })
+
   
       this.loading = false
 

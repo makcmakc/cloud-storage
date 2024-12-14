@@ -7,8 +7,8 @@ import { useAuthStore } from '@/stores/auth'
 const store = useAuthStore()
 
 onMounted(async () => {
-  await store.initUser()
-  store.startListeningToAuthChanges()
+  // await store.initUser()
+  // store.startListeningToAuthChanges()
   // if (!store.user) router.push('/auth')
 })
 </script>
