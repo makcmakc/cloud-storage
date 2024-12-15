@@ -85,14 +85,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="space-y-3 relative w-full xs:w-[150px]" v-if="!loading">
+  <!-- <div class="space-y-3 relative w-full xs:w-[150px]" v-if="!loading">
     <Skeleton class="h-[150px] w-auto " />
     <div class="space-y-2">
       <Skeleton class="h-4 w-full" />
     </div>
-  </div>
+  </div> -->
 
-  <div class="space-y-3 relative w-full  xs:w-[150px]" v-show="loading">
+  <div class="space-y-3 relative w-full  xs:w-[150px]" >
     <ContextMenu>
       <ContextMenuTrigger>
         <div class="overflow-hidden card rounded-md relative">

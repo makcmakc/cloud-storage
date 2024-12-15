@@ -17,6 +17,7 @@
     "@supabase/supabase-js": "^2.42.5",
     "@vee-validate/zod": "^4.12.6",
     "@vueuse/core": "^10.9.0",
+    "axios": "^1.7.9",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "fslightbox-vue": "^2.1.3",

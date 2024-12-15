@@ -2,7 +2,7 @@
   <ScrollArea class="w-full py-4 px-2">
     <div class="gap-6 grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))]" v-if="!loading">
       <component
-        v-for="(file, idx) in files"
+        v-for="(file, idx) in madeForYouAlbums"
         :is="card(file)"
         :key="idx"
         :file="file"
@@ -24,15 +24,12 @@ import { useFilesStore } from '@/stores/files'
 import { ScrollArea } from '@/components/ui/scroll-area'
 
 // cards
-// import File from '../components/File.vue'
+import File from '../components/File.vue'
 import AudioCard from '../components/cards/audio/index.vue'
 import ImageCard from '../components/cards/image/index.vue'
 import VideoCard from '../components/cards/video/index.vue'
 import DocumentCard from '../components/cards/document/index.vue'
 
-
-const viewBy = ref('tile')
-const sortBy = ref('name')
 const files = ref([])
 
 const filesStore = useFilesStore()
@@ -49,6 +46,8 @@ const cards = {
 const card = (file: object) => {
   return cards[file.type]
 }
+
+import { madeForYouAlbums } from '../components/albums'
 
 onMounted(async () => {
   // const data = await filesStore.fetchFiles()
