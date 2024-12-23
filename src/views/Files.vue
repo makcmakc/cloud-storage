@@ -48,10 +48,25 @@ const card = (file: object) => {
 }
 
 import { madeForYouAlbums } from '../components/albums'
+import axios from 'axios'
+
+
+const listFiles = async () => {
+  try {
+      const response = await axios.get('http://localhost:3000/files');
+      files.value = response.data;
+      console.log(response, ' response')
+  } catch (error) {
+      console.error(error);
+      alert('Failed to list files');
+  }
+}
+
 
 onMounted(async () => {
   // const data = await filesStore.fetchFiles()
   // await filesStore.fetchPublicURL()
   // files.value = data
+  listFiles()
 })
 </script>
