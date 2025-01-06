@@ -10,14 +10,14 @@ export const madeForYouAlbums: Album[] = [
   {
     name: 'Made in Japan',
     artist: 'Ysa Ferrer',
-    url: 'http://localhost:3000/files/Ysa_Ferrer_-_Made_in_Japan_48275178.mp3',
+    url: `${import.meta.env.VITE_API_ENDPOINT}/files/Ysa_Ferrer_-_Made_in_Japan_48275178.mp3`,
     cover: 'https://m.media-amazon.com/images/I/81GPO64o5PL._UF894,1000_QL80_.jpg',
     type: 'audio'
   },
   {
     name: 'Despair',
     artist: 'TOHA',
-    url: 'http://localhost:3000/files/despair.mp3',
+    url: `${import.meta.env.VITE_API_ENDPOINT}/files/despair.mp3`,
     cover: '',
     type: 'audio'
   },  

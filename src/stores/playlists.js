@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { supabase } from '@/services/supabaseClient'
+// import { supabase } from '@/services/supabaseClient'
 // import { handleError } from '@/utils/handleError'
 import { isAudio } from "@/utils/is.js"
 
@@ -52,36 +52,36 @@ export const usePlaylistStore = defineStore('playlist', {
     },
 
     async fetchPlaylists() {
-      this.loading = true
+      // this.loading = true
 
-      const { data, error } = await supabase.storage
-        .from('avatars')
-        .list();
+      // const { data, error } = await supabase.storage
+      //   .from('avatars')
+      //   .list();
       
-      if (error) {
-        console.log(error)
-        return []
-      }
+      // if (error) {
+      //   console.log(error)
+      //   return []
+      // }
 
-      this.playlists = data.reduce((acc, el) => {
-        if (isAudio(el.metadata?.mimetype)) acc.push(el)
-          return acc
-      }, [])
+      // this.playlists = data.reduce((acc, el) => {
+      //   if (isAudio(el.metadata?.mimetype)) acc.push(el)
+      //     return acc
+      // }, [])
   
-      this.loading = false
+      // this.loading = false
 
-      return this.playlists
+      // return this.playlists
     },
 
     async fetchPublicURL() {
-      const { data, error } = supabase
-        .storage
-        .from('avatars')
-        .getPublicUrl('/')
+      // const { data, error } = supabase
+      //   .storage
+      //   .from('avatars')
+      //   .getPublicUrl('/')
 
-      if (error) console.log(error)
+      // if (error) console.log(error)
 
-      this.publicURL = data.publicUrl
+      // this.publicURL = data.publicUrl
     },    
   }
 })

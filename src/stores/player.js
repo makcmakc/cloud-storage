@@ -1,13 +1,11 @@
 import { defineStore } from 'pinia'
-import { supabase } from '@/services/supabaseClient'
-// import { handleError } from '@/utils/handleError'
-// import { isAudio } from "@/utils/is.js"
 
 export const usePlayerStore = defineStore('player', {
   state: () => ({
     loading: false,
     playlists: [],
-    publicURL: '',
+
+    visible: false,
 
     isPlaying: false,
     isMute: false,
@@ -29,7 +27,6 @@ export const usePlayerStore = defineStore('player', {
   }),
   getters: {
     getLoading: state => state.loading,
-    getPublicURL: state => state.publicURL,
     getPlaylists: state => state.playlists,
 
     getCurrentTrack: state => state.currentTrack,
@@ -70,6 +67,7 @@ export const usePlayerStore = defineStore('player', {
     },
 
     initAudio() {
+      // console.log(this.currentTrack)
       this.audio = new Audio(this.currentTrack);
       this.audio.addEventListener('timeupdate', this.updateProgress);
       this.audio.addEventListener('loadeddata', this.loadMetadata )
@@ -81,7 +79,6 @@ export const usePlayerStore = defineStore('player', {
     },
 
     endedTrack() {
-      console.log('ended track')
       this.audio.currentTime = 0
       this.isPlaying = false
     },
@@ -115,9 +112,6 @@ export const usePlayerStore = defineStore('player', {
     },
 
     progressTrack(payload) {
-      // console.log(payload[0] * this.durationSeconds / 100, this.audio.currentTime, 'payload')
-
-      // this.audio.currentTime = payload[0] * this.durationSeconds / 100
       this.currentSeconds = payload[0] * this.durationSeconds / 100
     },
 
@@ -127,7 +121,6 @@ export const usePlayerStore = defineStore('player', {
     },
 
     playTrack() {
-      // console.log(this.audio, 'audio')
       this.isPlaying = true
       this.audio.play();     
     },

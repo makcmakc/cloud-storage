@@ -10,16 +10,20 @@
         :width="150"
         :height="150"
       />
+      <!-- {{  madeForYouAlbums  }} -->
+         <!-- {{ path  }} -->
     </div>
   </ScrollArea>
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { ScrollArea } from '@/components/ui/scroll-area'
 import AudioCard from "../components/AudioCard.vue";
 
 import { madeForYouAlbums } from '../components/albums'
 
 import { usePlaylistStore } from '@/stores/playlists' 
+
+const path = computed(() => import.meta.env.VITE_API_ENDPOINT)
 </script>

@@ -1,6 +1,7 @@
 <script setup>
 import { RouterView, /*useRouter*/ } from 'vue-router'
 import { onMounted } from 'vue'
+import { Toaster } from '@/components/ui/toast'
 import { useAuthStore } from '@/stores/auth' 
 
 // const router = useRouter()
@@ -14,5 +15,6 @@ onMounted(async () => {
 </script>
 
 <template>
+  <Toaster />
   <RouterView />
 </template>

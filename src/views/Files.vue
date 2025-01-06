@@ -22,6 +22,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useFilesStore } from '@/stores/files' 
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { useToast } from '@/components/ui/toast/use-toast'
 
 // cards
 import File from '../components/File.vue'
@@ -29,6 +30,11 @@ import AudioCard from '../components/cards/audio/index.vue'
 import ImageCard from '../components/cards/image/index.vue'
 import VideoCard from '../components/cards/video/index.vue'
 import DocumentCard from '../components/cards/document/index.vue'
+
+// mock
+import { madeForYouAlbums } from '../components/albums'
+
+const { toast } = useToast()
 
 const files = ref([])
 
@@ -47,26 +53,15 @@ const card = (file: object) => {
   return cards[file.type]
 }
 
-import { madeForYouAlbums } from '../components/albums'
-import axios from 'axios'
-
-
-const listFiles = async () => {
-  try {
-      const response = await axios.get('http://localhost:3000/files');
-      files.value = response.data;
-      console.log(response, ' response')
-  } catch (error) {
-      console.error(error);
-      alert('Failed to list files');
-  }
-}
-
 
 onMounted(async () => {
   // const data = await filesStore.fetchFiles()
-  // await filesStore.fetchPublicURL()
   // files.value = data
-  listFiles()
+  // cno
+  
+  filesStore.fetchFiles().then(() => {
+    toast({ title: 'Scheduled: Catch up', description: 'Friday, February 10, 2023 at 5:57 PM'});
+    console.log('getFiles', filesStore.getFiles)
+  })
 })
 </script>

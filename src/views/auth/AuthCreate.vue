@@ -39,7 +39,7 @@ const formSchema = toTypedSchema(z
       }),
     confirmPassword: z
       .string()
-      .min(1, { message: "This field has to be filled." }),
+      .min(2, { message: "This field has to be filled." }),
   })
   .superRefine(({ confirmPassword, password }, ctx) => {
     if (confirmPassword !== password) {

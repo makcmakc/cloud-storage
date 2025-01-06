@@ -13,9 +13,11 @@ const isOpen = ref(true)
   <TooltipProvider :delay-duration="0">
     <SidebarProvider v-model:open="isOpen">
       <Sidebar :isOpen="isOpen" class="bg-sidebar" />
-      <main class="w-full mr-2 px-2">
-        <Header />
-        <Separator class="mx-2 px-2" />
+      <main class="w-full">
+        <!-- bg-muted  px-2 pr-2-->
+        <Header class=" " />
+        <!-- border-b-2 border-white -->
+        <!-- <Separator class="mx-2 px-2 ml-2" /> -->
         <RouterView />
       </main>
     </SidebarProvider>

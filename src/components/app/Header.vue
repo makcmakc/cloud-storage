@@ -1,10 +1,12 @@
 <template>
-  <header class="pl-2">
-    <div class="space-between md:flex items-center hidden h-11">    
+   <!-- bg-muted -->
+   <!-- border-neutrual-800 -->
+  <header class="">
+    <div class="navigation space-between md:flex items-center flex h-11 bg-muted border-b px-2" :class="{'border-zinc-700': playerStore.visible}">    
       <div class="flex items-center justify-between w-full">
         <div class="gap-3 inline-flex items-center justify-center">
           <SidebarTrigger class="size-4 text-muted-foreground" />
-          <Separator orientation="vertical" class="h-5" />
+          <Separator orientation="vertical" class="h-5 bg-zinc-700" />
           <Breadcrumb>
             <BreadcrumbList class="text-xs sm:gap-1.5">
               <BreadcrumbItem class="text-xs">
@@ -17,9 +19,11 @@
       </div>
 
       <div class="flex shrink-0 items-center">
+        <!-- <button @click="showHanlde">FLEX</button> -->
         <DropdownMenu>
           <DropdownMenuTrigger as-child>
-            <Button variant="outline" class="px-2">
+            <Button variant="outline" class="px-2 text-xs flex items-center gap-1">
+              <ArrowDownUp :size="14" />
               Sort by
             </Button>
           </DropdownMenuTrigger>
@@ -39,7 +43,8 @@
         </DropdownMenu>
         <DropdownMenu>
           <DropdownMenuTrigger as-child>
-            <Button variant="outline" class="px-2">
+            <Button variant="outline" class="px-2 text-xs flex items-center gap-1">
+              <Grid2x2 :size="14" />
               View by
             </Button>
           </DropdownMenuTrigger>
@@ -56,24 +61,26 @@
         </DropdownMenu>
       </div>
     </div>
+
+    <Transition name="slide-down">
+      <Player v-if="playerStore.visible" />
+    </Transition>
   </header>
 </template>
 
 <script setup lang="ts">
-
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Separator } from '@/components/ui/separator'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
 import { SlashIcon } from '@radix-icons/vue'
+import { ArrowDownUp, Grid2x2 } from 'lucide-vue-next'
 
-import { FormField, FormItem, FormLabel } from '@/components/ui/form'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer'
 
-import { ref } from "vue"
-import {useRoute} from 'vue-router'
-import {computed} from 'vue'
+import { ref, computed } from "vue"
+import { useRoute } from 'vue-router'
+import Player from "./HeaderPlayer.vue"
+import { usePlayerStore } from '@/stores/player'
 
 const viewBy = ref('tile')
 const sortBy = ref('name')
@@ -82,9 +89,25 @@ const router = useRoute();
 
 const currentPath = computed(() => router.name)
 
+const playerStore = usePlayerStore()
+
+// const showHanlde = () => {
+//   playerStore.visible = true
+// }
+
 const capitalize = (text: string) =>  {
   return text.replace(/\b\w/g, function (m: string) {
     return m.toUpperCase()
   })
 }
 </script>
+
+<style lang="scss">
+header {
+  .navigation {
+    // border-color: hsl(var(--input));
+    // border-color: rgb(24 24 27 / var(--tw-border-opacity, 1));
+    // border-bottom: 1px solid hsl(var(--secondary-foreground));
+  }
+}
+</style>
