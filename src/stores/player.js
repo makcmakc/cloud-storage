@@ -67,7 +67,6 @@ export const usePlayerStore = defineStore('player', {
     },
 
     initAudio() {
-      // console.log(this.currentTrack)
       this.audio = new Audio(this.currentTrack);
       this.audio.addEventListener('timeupdate', this.updateProgress);
       this.audio.addEventListener('loadeddata', this.loadMetadata )

@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-// import { supabase } from '@/services/supabaseClient'
 
 import { File, Images, ListMusic  } from 'lucide-vue-next'
 

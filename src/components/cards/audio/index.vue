@@ -23,65 +23,65 @@ const props = defineProps<FileProps>()
 toRef(props, 'file')
 
 
-const isPlaying = computed({
-  get() {
-    return playerStore.getAudioState
-  },
-  set(v) {
-    return playerStore.setAudioState(v)
-  }
-})
+// const isPlaying = computed({
+//   get() {
+//     return playerStore.getAudioState
+//   },
+//   set(v) {
+//     return playerStore.setAudioState(v)
+//   }
+// })
 
-const playbackCircle = ref()
-const current = ref()
+// const playbackCircle = ref()
+// const current = ref()
 
-const currentTrack = computed(() => playerStore.getCurrentTrack)
-const currentTrackTime = computed(() => playerStore.getCurrentSeconds)
-const currentTrackDuration = computed(() => playerStore.getDurationSeconds)
-const publicURL = computed(() => filesStore.getPublicURL)
+// const currentTrack = computed(() => playerStore.getCurrentTrack)
+// const currentTrackTime = computed(() => playerStore.getCurrentSeconds)
+// const currentTrackDuration = computed(() => playerStore.getDurationSeconds)
+// const publicURL = computed(() => filesStore.getPublicURL)
 
-const totalLength = computed(() => {
-  const playbackCircleLength = playbackCircle.value?.getTotalLength() ?? 0
-  return playbackCircleLength
-})
+// const totalLength = computed(() => {
+//   const playbackCircleLength = playbackCircle.value?.getTotalLength() ?? 0
+//   return playbackCircleLength
+// })
 
-const currentTrackProgress = computed(() => {
-  const playbackCircleLength = playbackCircle.value?.getTotalLength() ?? 0
-  return playbackCircleLength - ( currentTrackTime.value / currentTrackDuration.value * playbackCircleLength )
-})
+// const currentTrackProgress = computed(() => {
+//   const playbackCircleLength = playbackCircle.value?.getTotalLength() ?? 0
+//   return playbackCircleLength - ( currentTrackTime.value / currentTrackDuration.value * playbackCircleLength )
+// })
 
-const isCurrentTrackPlaying = () => {
-  return isPlaying.value && publicURL.value+props.file.name === currentTrack.value
-}
+// const isCurrentTrackPlaying = () => {
+//   return isPlaying.value && publicURL.value+props.file.name === currentTrack.value
+// }
 
-const playHandler = (track: Object) => {
-  isPlaying.value = !isPlaying.value
+// const playHandler = (track: Object) => {
+//   isPlaying.value = !isPlaying.value
 
-  // need to rewrite
-  const trackUrl = publicURL.value+track.name ?? ''
-  track = {...track, url: trackUrl}
-  console.log(trackUrl)
+//   // need to rewrite
+//   const trackUrl = publicURL.value+track.name ?? ''
+//   track = {...track, url: trackUrl}
+//   console.log(trackUrl)
 
-  if (!playerStore.getAudio) playerStore.initAudio()
-  if (current.value !== currentTrack.value) current.value = track
+//   if (!playerStore.getAudio) playerStore.initAudio()
+//   if (current.value !== currentTrack.value) current.value = track
 
-  playerStore.setCurrentTrack(track)
+//   playerStore.setCurrentTrack(track)
 
-  if (isPlaying.value) playerStore.playTrack()
-  else playerStore.pauseTrack()
-}
+//   if (isPlaying.value) playerStore.playTrack()
+//   else playerStore.pauseTrack()
+// }
 
-// check if audio is loaded
-const readyAudio = ref(0)
+// // check if audio is loaded
+// const readyAudio = ref(0)
 
-const loading = computed(() => readyAudio.value >= 3 ?? null)
+// const loading = computed(() => readyAudio.value >= 3 ?? null)
 
-onMounted(() => {
-  const readyUrl = publicURL.value+props.file.name
-  const obj = new Audio(readyUrl)
+// onMounted(() => {
+//   const readyUrl = publicURL.value+props.file.name
+//   const obj = new Audio(readyUrl)
 
-  obj.addEventListener("loadeddata", () => readyAudio.value = obj.readyState)
-})
+//   obj.addEventListener("loadeddata", () => readyAudio.value = obj.readyState)
+// })
 </script>
 
 <template>
@@ -93,7 +93,8 @@ onMounted(() => {
   </div> -->
 
   <div class="space-y-3 relative w-full  xs:w-[150px]" >
-    <ContextMenu>
+    {{  file  }}
+    <!-- <ContextMenu>
       <ContextMenuTrigger>
         <div class="overflow-hidden card rounded-md relative">
           <img v-if="file.cover"
@@ -163,7 +164,7 @@ onMounted(() => {
         <ContextMenuSeparator />
         <ContextMenuItem>Share</ContextMenuItem>
       </ContextMenuContent>
-    </ContextMenu>
+    </ContextMenu> -->
     <div class="space-y-1 text-sm">
       <h3 class="font-medium leading-5 text-center">
         {{ truncateString(file.name) }}

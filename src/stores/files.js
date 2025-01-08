@@ -25,12 +25,14 @@ export const useFilesStore = defineStore('files', {
       this.loading = loading;
     },
     async fetchFiles() {
-      fetch(`${import.meta.env.VITE_API_ENDPOINT}/files`)
+      const data = fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/files`)
       .then(response => response.json())
       .then(data => {
         this.files = data
-         console.log(this.getFiles , ' this.files ')
+         console.log(this.getFiles , this.files, ' this.files ')
+        return data
       });
+      return data
     },  
   }
 })

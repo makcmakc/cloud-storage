@@ -1,15 +1,17 @@
 <script lang="ts" setup>
+import { onBeforeUnmount, nextTick, ref } from 'vue'
 import { cn } from '@/lib/utils'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
-import { Dashboard } from '@uppy/vue'
 import { Upload } from 'lucide-vue-next'
-import axios from 'axios'
-// import Tus from '@uppy/tus'
-import Uppy from '@uppy/core'
+
 import '@uppy/core/dist/style.css'
 import '@uppy/dashboard/dist/style.css'
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+
+
+import Uppy from '@uppy/core'
+import Dashboard from '@uppy/dashboard'
+import XHRUpload from '@uppy/xhr-upload'
 
 interface props {
   isOpen: boolean
@@ -17,79 +19,101 @@ interface props {
 
 defineProps<props>()
 
-const handleUpload = () => {}
+const uppy = ref(null)
+const dashboardElement = ref(null)
 
-const uppy = ref(new Uppy({
-  debug: false,
-  autoProceed: true,
-}));
+const initUppy = () => {
+  if (!uppy.value) {
+    uppy.value = new Uppy({
+      restrictions: {
+        // maxFileSize: 10 * 1024 * 1024, // 10MB
+        maxNumberOfFiles: 10,
+      },
+      onBeforeFileAdded: (currentFile) => {
+        // Можно добавить дополнительную валидацию файлов здесь
+        return true
+      },
+    })
+      .use(Dashboard, {
+        inline: true,
+        target: dashboardElement.value,
+        height: 400,
+        showProgressDetails: true,
+        proudlyDisplayPoweredByUppy: false,
+      })
+      .use(XHRUpload, {
+        endpoint: 'http://localhost:3000/api/upload',
+        fieldName: 'file',
+        formData: true,
+      })
 
-const files = ref([]);
+    uppy.value.on('upload-success', (file, response) => {
+      console.log('File uploaded:', response.body)
+    })
 
-onMounted(() => {
-  // uppy.value.use(Dashboard, {
-  //   inline: true,
-  //   target: '#uppy-dashboard',
-  //   height: 280,
-  //   metaFields: [
-  //     { id: 'name', name: 'Name', placeholder: 'file name' }
-  //   ]
-  // });
-  fetchFiles();
-
-  uppy.value.on('complete', (result) => {
-    console.log('Upload result:', result);
-    // fetchFiles();
-  });
-
-  uppy.value.on('upload-success', (file, response) => {
-    // const fileData = JSON.parse(response.body);
-    // files.value.push({ name: fileData.originalname, path: `/uploads/${fileData.filename}` });
-  });
-
-  // fetchFiles();
-});
+    uppy.value.on('complete', (result) => {
+      console.log(result,' result')
+      cleanupUppy()
+    })
+  }
+}
 
 const fetchFiles = () => {
   fetch('http://localhost:3000/files')
-    .then(response => response.json())
-    .then(data => {
-      files.value = data;
-      console.log(data,  'fetchFiles')
-    });
+    // .then(response => response.json())
+    // .then(data => {
+    //   files.value = data;
+    //   console.log(data,  'fetchFiles')
+    // });
 };
 
-const deleteFile = (filename: string) => {
-  fetch(`http://localhost:3000/files/${filename}`, {
-    method: 'DELETE'
-  }).then(() => {
-    fetchFiles();
-  });
-};
+const cleanupUppy = () => {
+  if (uppy.value) {
+    uppy.value.getPlugin('Dashboard').unmount()
+    // uppy.value.reset()
+    uppy.value = null
+  }
+}
 
-// onBeforeUnmount(() => {
-//   if (uppy.value) {
-//     uppy.value.close();
-//   }
-// });
+const handleDialogChange = (open) => {
+  if (open) {
+    nextTick(() => {
+      initUppy()
+    })
+  } else {
+    cleanupUppy()
+    isDialogOpen.value = false
+  }
+}
+
+const isDialogOpen = ref(false)
+
+
+onBeforeUnmount(() => {
+  if (uppy.value) {
+    uppy.value.close()
+  }
+});
 </script>
 
 <template>
-  	<Dialog>
+  	<Dialog @update:open="handleDialogChange">
       <DialogTrigger as-child>
-        <Button v-if="isOpen" class="w-full gap-2" variant="secondary" @click="handleUpload">
+        <Button v-if="isOpen" class="w-full gap-2" variant="secondary">
           <Upload :size="16" />
           Upload file
         </Button>
-        <div v-else :class="cn(buttonVariants({ variant: 'secondary' }), 'p-1 w-8 h-8 cursor-pointer')" @click="handleUpload">
+        <div v-else :class="cn(buttonVariants({ variant: 'secondary' }), 'p-1 w-8 h-8 cursor-pointer')">
           <Upload :size="14" />
         </div>
       </DialogTrigger>
 
 		<DialogContent class=" w-1/2 p-10 max-w-[800px]">
-			<Dashboard :uppy="uppy" />
+			<!-- <Dashboard :uppy="uppy" /> -->
+      <div ref="dashboardElement"></div>
 		</DialogContent>
 	</Dialog>
+  <!-- <div ref="dashboardElement"></div> -->
 </template>
 
 <style lang="scss">
@@ -101,8 +125,30 @@ const deleteFile = (filename: string) => {
   // background-color: ;
 }
 
+.uppy-DashboardContent-title {
+  color: #fff;
+}
+
+.uppy-Dashboard-Item-fileInfo {
+  color: #fff;
+}
+
+.uppy-StatusBar-actions {
+  // background-color: hsl(var(--muted)) !important;
+  background-color: hsl(var(--muted)) !important;
+}
+
+.uppy-StatusBar {
+  background-color: hsl(var(--muted)) !important;
+  border-color: hsl(var(--muted)) !important;;
+
+  &::before {
+    //  background-color: hsl(var(--muted)) !important;
+  }
+}
+
 .uppy-DashboardContent-bar {
-  background-color: var(--muted) !important;
+  background-color: hsl(var(--muted)) !important;
 }
 
 .uppy-StatusBar-actions {
@@ -116,17 +162,15 @@ const deleteFile = (filename: string) => {
 	border: none;
 }
 
-// :deep {
 .uppy-Dashboard-AddFiles {
-	margin: 0 !important;
-// }
-}
+	// margin: 0 !important;
 
-.uppy-Dashboard-AddFiles-title {
-	color: #fff;
+  &-title {
+    color: #fff;
+  }
 }
 
 .uppy-Dashboard-AddFiles-info {
-	display: none !important;
+	display: none !important; 
 }
 </style>

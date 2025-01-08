@@ -63,23 +63,25 @@
     </div>
 
     <Transition name="slide-down">
-      <Player v-if="playerStore.visible" />
+      <AudioPlayer v-if="playerStore.visible" />
     </Transition>
   </header>
 </template>
 
 <script setup lang="ts">
+import { ref, computed } from "vue"
+import { useRoute } from 'vue-router'
+
 import { SidebarTrigger } from "@/components/ui/sidebar"
+import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Separator } from '@/components/ui/separator'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
+import AudioPlayer from "@/components/files/viewers/AudioPlayer.vue"
+
 import { SlashIcon } from '@radix-icons/vue'
 import { ArrowDownUp, Grid2x2 } from 'lucide-vue-next'
 
-
-import { ref, computed } from "vue"
-import { useRoute } from 'vue-router'
-import Player from "./HeaderPlayer.vue"
 import { usePlayerStore } from '@/stores/player'
 
 const viewBy = ref('tile')
@@ -101,13 +103,3 @@ const capitalize = (text: string) =>  {
   })
 }
 </script>
-
-<style lang="scss">
-header {
-  .navigation {
-    // border-color: hsl(var(--input));
-    // border-color: rgb(24 24 27 / var(--tw-border-opacity, 1));
-    // border-bottom: 1px solid hsl(var(--secondary-foreground));
-  }
-}
-</style>

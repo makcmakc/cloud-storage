@@ -10,22 +10,23 @@ export const madeForYouAlbums: Album[] = [
   {
     name: 'Made in Japan',
     artist: 'Ysa Ferrer',
-    url: `${import.meta.env.VITE_API_ENDPOINT}/files/Ysa_Ferrer_-_Made_in_Japan_48275178.mp3`,
+    url: `${import.meta.env.VITE_API_ENDPOINT}/uploads/Ysa_Ferrer_-_Made_in_Japan_48275178.mp3`,
     cover: 'https://m.media-amazon.com/images/I/81GPO64o5PL._UF894,1000_QL80_.jpg',
     type: 'audio'
   },
   {
     name: 'Despair',
     artist: 'TOHA',
-    url: `${import.meta.env.VITE_API_ENDPOINT}/files/despair.mp3`,
+    url: `${import.meta.env.VITE_API_ENDPOINT}/uploads/despair.mp3`,
     cover: '',
     type: 'audio'
   },  
   {
-    name: 'React Rendezvous',
-    artist: 'Ethan Byte',
-    cover:
-      'https://images.unsplash.com/photo-1614113489855-66422ad300a4?w=300&dpr=2&q=80',
+    name: 'L Theme',
+    artist: 'Gabriele Motta',
+    cover: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkysFYX_J8EkYbcziVVTTrR-HqeO0iCVSDOg&s',
+    url: `${import.meta.env.VITE_API_ENDPOINT}/uploads/Gabriele_Motta_-_Ls_Theme.mp3`,
+    type: 'audio'
   },
   {
     name: 'Stateful Symphony',
