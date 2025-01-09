@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue'
+
 import { Button } from '@/components/ui/button'
 import {
   Sidebar,
@@ -23,14 +25,13 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 import SidebarNavItem from './SidebarNavItem.vue'
-import UploadButton from './UploadButton.vue'
-import StorageInfo from '@/components/sidebar/StorageInfo.vue'
+import UploadButton from '../upload/UploadButton.vue'
+import StorageStats from './StorageStats.vue'
 
 import { LogOut, ChevronsUpDown, Github, Settings, UserRoundCog } from 'lucide-vue-next'
 
 import { useNavigationStore } from '@/stores/navigation'
 import { useAuthStore } from '@/stores/auth'
-import { computed, ref } from 'vue'
 
 
 const authStore = useAuthStore()
@@ -113,7 +114,7 @@ defineProps<props>()
       </SidebarGroup>
     </SidebarContent>
     <SidebarFooter>
-      <StorageInfo :isOpen="isOpen" />
+      <StorageStats :isOpen="isOpen" />
     </SidebarFooter>
   </Sidebar>
 </template>

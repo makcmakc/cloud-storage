@@ -1,10 +1,11 @@
 <script setup>
-import { ref } from 'vue';
+import { ref } from 'vue'
+import { RouterView } from 'vue-router'
+
 import { SidebarProvider } from '@/components/ui/sidebar'
 import { TooltipProvider } from '@/components/ui/tooltip'
-import Header from '@/components/app/Header.vue'
-import Sidebar from '@/components/sidebar/SidebarIndex.vue'
-import { Separator } from '@/components/ui/separator'
+import Header from '@/components/common/header/Header.vue'
+import Sidebar from '@/components/common/sidebar/SidebarIndex.vue'
 
 const isOpen = ref(true)
 </script>
@@ -14,10 +15,7 @@ const isOpen = ref(true)
     <SidebarProvider v-model:open="isOpen">
       <Sidebar :isOpen="isOpen" class="bg-sidebar" />
       <main class="w-full">
-        <!-- bg-muted  px-2 pr-2-->
-        <Header class=" " />
-        <!-- border-b-2 border-white -->
-        <!-- <Separator class="mx-2 px-2 ml-2" /> -->
+        <Header />
         <RouterView />
       </main>
     </SidebarProvider>

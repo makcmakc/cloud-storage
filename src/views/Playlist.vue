@@ -53,6 +53,5 @@ import {
 } from '@/components/ui/context-menu'
 import AudioCard from "../components/AudioCard.vue";
 
-import { madeForYouAlbums } from '../components/albums'
-
+const madeForYouAlbums = []
 </script>

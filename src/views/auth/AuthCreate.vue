@@ -14,7 +14,7 @@ import { ShieldEllipsis, Mail, LoaderCircle, ShieldCheck } from 'lucide-vue-next
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
-import PasswordStrengthMeter from '@/components/PasswordStrengthMeter.vue'
+import PasswordStrengthMeter from '@/components/common/auth/PasswordStrengthMeter.vue'
 
 const isLoading = ref(false)
 const passwordScore = ref(0)

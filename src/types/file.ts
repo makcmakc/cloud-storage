@@ -15,7 +15,6 @@ export interface AudioMetadata extends FileMetadata {
   sampleRate?: number;
   coverUrl?: string;
 }
-
 export interface VideoMetadata {
   duration?: number;
   width?: number;
@@ -24,7 +23,7 @@ export interface VideoMetadata {
   bitrate?: number;
   fps?: number;
   thumbnailUrl?: string;
-  previewUrl?: string; // URL для низкокачественной версии видео
+  previewUrl?: string; // URL for the low-quality version of the video
 }
 export interface FileInfo {
   id: string;
@@ -38,11 +37,3 @@ export interface FileInfo {
   audioMetadata?: AudioMetadata;
   videoMetadata?: VideoMetadata;
 }
-
-export type FileType = 'audio' | 'image' | 'document' | 'other';
-export interface FileCardProps {
-  file: FileInfo;
-  onDelete: (id: string) => Promise<void>;
-  onEdit?: (id: string) => void;
-  onShare?: (id: string) => void;
-} 

@@ -1,6 +1,4 @@
 <template>
-   <!-- bg-muted -->
-   <!-- border-neutrual-800 -->
   <header class="">
     <div class="navigation space-between md:flex items-center flex h-11 bg-muted border-b px-2" :class="{'border-zinc-700': playerStore.visible}">    
       <div class="flex items-center justify-between w-full">
@@ -10,7 +8,7 @@
           <Breadcrumb>
             <BreadcrumbList class="text-xs sm:gap-1.5">
               <BreadcrumbItem class="text-xs">
-                <BreadcrumbLink :href="`/${String(currentPath)}`">{{ capitalize(currentPath) }}</BreadcrumbLink>
+                <BreadcrumbLink :href="`/${String(currentPath)}`">{{ capitalizeString(currentPath) }}</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator class="[&>svg]:size-3"><SlashIcon /></BreadcrumbSeparator>
             </BreadcrumbList>
@@ -19,10 +17,9 @@
       </div>
 
       <div class="flex shrink-0 items-center">
-        <!-- <button @click="showHanlde">FLEX</button> -->
         <DropdownMenu>
           <DropdownMenuTrigger as-child>
-            <Button variant="outline" class="px-2 text-xs flex items-center gap-1">
+            <Button variant="ghost" class="px-2 text-xs flex items-center gap-1">
               <ArrowDownUp :size="14" />
               Sort by
             </Button>
@@ -43,7 +40,7 @@
         </DropdownMenu>
         <DropdownMenu>
           <DropdownMenuTrigger as-child>
-            <Button variant="outline" class="px-2 text-xs flex items-center gap-1">
+            <Button variant="ghost" class="px-2 text-xs flex items-center gap-1">
               <Grid2x2 :size="14" />
               View by
             </Button>
@@ -84,22 +81,13 @@ import { ArrowDownUp, Grid2x2 } from 'lucide-vue-next'
 
 import { usePlayerStore } from '@/stores/player'
 
+import { capitalizeString } from "@/utils/capitalizeString"
+
+const playerStore = usePlayerStore()
+const router = useRoute();
+
 const viewBy = ref('tile')
 const sortBy = ref('name')
 
-const router = useRoute();
-
 const currentPath = computed(() => router.name)
-
-const playerStore = usePlayerStore()
-
-// const showHanlde = () => {
-//   playerStore.visible = true
-// }
-
-const capitalize = (text: string) =>  {
-  return text.replace(/\b\w/g, function (m: string) {
-    return m.toUpperCase()
-  })
-}
 </script>

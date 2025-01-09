@@ -6,7 +6,8 @@ import type { FileInfo } from '@/types/file'
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuTrigger } from '@/components/ui/context-menu'
 import { Skeleton } from '@/components/ui/skeleton'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
-import { Pencil, Share, ImagePlus, Download, FilePenLine, Copy, Info, Trash } from 'lucide-vue-next';
+
+import { Share, Download, FilePenLine, Info, Trash } from 'lucide-vue-next'
 
 
 const props = defineProps<{
@@ -42,20 +43,20 @@ watch(() => props.loading, (newValue) => {
         <ContextMenuItem><Share :size="16" class="mr-2"/>Share</ContextMenuItem>
         <ContextMenuSeparator />
         <ContextMenuItem><Download :size="16" class="mr-2"/>Download</ContextMenuItem>
-        <ContextMenuItem><Pencil :size="16" class="mr-2"/>Edit</ContextMenuItem>
-        <ContextMenuItem>
+        <ContextMenuItem><FilePenLine :size="16" class="mr-2"/>Edit</ContextMenuItem>
+        <ContextMenuItem v-if="file.audioMetadata">
           <HoverCard :openDelay="0">
             <HoverCardTrigger class="w-full flex items-center">
               <Info :size="16" class="mr-2" />
               Info
             </HoverCardTrigger>
             <HoverCardContent side="right">
-              The Vue Framework – created and maintained by @vuejs.
+              <slot name="info" />
             </HoverCardContent>
           </HoverCard>
         </ContextMenuItem>
         <ContextMenuSeparator />
-        <ContextMenuItem><Trash :size="16" class="mr-2" />Delete</ContextMenuItem>
+        <ContextMenuItem @click="onDelete(file.id)"><Trash :size="16" class="mr-2" />Delete</ContextMenuItem>
       </ContextMenuContent>
     </ContextMenu>        
 
