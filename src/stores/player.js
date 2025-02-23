@@ -1,127 +1,137 @@
 import { defineStore } from 'pinia'
+import { useFilesStore } from '@/stores/files'
 
 export const usePlayerStore = defineStore('player', {
   state: () => ({
-    loading: false,
-    playlists: [],
-
-    visible: false,
-
     isPlaying: false,
-    isMute: false,
-    currentTrack: '',
-    changingSong: false,
-    audio: null,
-    currentPlaylist: null,
-
-    playback: 0,
-    
-    currentSeconds: 0,
-    durationSeconds: 0,
-    buffered: 0,
-    innerLoop: false,
-    loaded: false,
-    previousVolume: 0.3,
-    showVolume: false,
-    volume: 0.5
+    currentTrackIndex: 0,
+    tracks: [],
+    currentTime: 0,
+    duration: 0,
+    volume: .5,
+    repeatMode: 'none', // 'none', 'one', 'all'
+    isPlayerVisible: false,
+    audioElement: null,
   }),
-  getters: {
-    getLoading: state => state.loading,
-    getPlaylists: state => state.playlists,
-
-    getCurrentTrack: state => state.currentTrack,
-
-    getPlayback: state => state.playback,
-
-    getAudioState: state => state.isPlaying,
-    getAudio: state => state.audio,
-    getVolume: state => state.volume,
-    getPreviousVolume: state => state.previousVolume,
-    getCurrentSeconds: state => state.currentSeconds,
-    getDurationSeconds: state => state.durationSeconds,
-  },
   actions: {
-    setLoading(loading) {
-      this.loading = loading;
+    initializeAudioElement() {
+      if (!this.audioElement) {
+        this.audioElement = new Audio()
+        this.audioElement.crossOrigin = "anonymous" // CORS
+        this.audioElement.volume = this.volume
+
+        this.audioElement.addEventListener('timeupdate', () => {
+          this.currentTime = this.audioElement.currentTime
+        })
+
+        this.audioElement.addEventListener('loadedmetadata', () => {
+          this.duration = this.audioElement.duration
+        })
+
+        this.audioElement.addEventListener('ended', this.handleTrackEnd)
+
+        this.audioElement.addEventListener('error', (e) => {
+          console.error('Error loading audio:', e)
+          this.stop()
+        })
+      }
     },
+    playPause() {
+      if (!this.audioElement) this.initializeAudioElement()
 
-    setCurrentTrack(track) {
-      // const trackUrl = this.publicURL+track.name
-      // console.log(trackUrl)
+      if (this.audioElement.paused) {
+        this.audioElement.play()
+        this.isPlaying = true
+      } else {
+        this.audioElement.pause()
+        this.isPlaying = false
+      }
+    },
+    nextTrack() {
+      const filesStore = useFilesStore()
+      const audioFiles = filesStore.files.filter(file => file.mimetype.startsWith('audio/'))
+      const currentIndex = audioFiles.findIndex(file => file.id === this.currentTrack?.id)
 
-      if (this.audio && this.currentTrack !== track.url) {
-        this.currentTrack = track.url
-        this.audio.src = this.currentTrack
-        this.audio.load()
-        this.playTrack()
+      if (currentIndex < audioFiles.length - 1) {
+        this.currentTrack = audioFiles[currentIndex + 1]
+      } else if (this.repeatMode === 'all') {
+        this.currentTrack = audioFiles[0]
+      } else {
+        this.stop()
         return
       }
-
-      // console.log(track)
-
-      this.currentTrack = track.url
+      this.loadTrack()
     },
+    prevTrack() {
+      const filesStore = useFilesStore()
+      const audioFiles = filesStore.files.filter(file => file.mimetype.startsWith('audio/'))
+      const currentIndex = audioFiles.findIndex(file => file.id === this.currentTrack?.id)
 
-    setAudioState(payload) {
-      this.isPlaying = payload
-    },
-
-    initAudio() {
-      this.audio = new Audio(this.currentTrack);
-      this.audio.addEventListener('timeupdate', this.updateProgress);
-      this.audio.addEventListener('loadeddata', this.loadMetadata )
-      this.audio.addEventListener('ended', this.endedTrack )
-    },
-
-    updateProgress() {
-      this.currentSeconds = this.audio.currentTime
-    },
-
-    endedTrack() {
-      this.audio.currentTime = 0
-      this.isPlaying = false
-    },
-
-    setMute() {
-      this.isMute = !this.isMute;
-
-      if (this.isMute) {
-        this.previousVolume = this.volume
-        this.audio.volume = 0
-        this.volume = 0
+      if (currentIndex > 0) {
+        this.currentTrack = audioFiles[currentIndex - 1]
+      } else if (this.repeatMode === 'all') {
+        this.currentTrack = audioFiles[audioFiles.length - 1]
       } else {
-        this.volume = this.previousVolume
-        this.audio.volume = this.volume
+        this.stop()
+        return
+      }
+      this.loadTrack()
+    },
+    loadTrack() {
+      if (!this.currentTrack) return
+      if (!this.audioElement) this.initializeAudioElement()
+
+      this.audioElement.src = this.currentTrack.url
+      this.audioElement.play()
+      this.isPlaying = true
+    },
+    setVolume(volume) {
+      this.volume = volume
+      if (this.audioElement) {
+        this.audioElement.volume = volume
       }
     },
-
-    setVolume(payload) {
-      this.volume = payload
-      this.audio.volume = payload
-      this.isMute = false
+    setCurrentTime(time) {
+      if (this.audioElement) {
+        this.audioElement.currentTime = time
+      }
     },
-
-    setPlayback(payload) {
-      this.playback = payload
-      this.audio.currentTime = payload * this.durationSeconds / 100
+    toggleRepeatMode() {
+      const modes = ['none', 'one', 'all']
+      const currentIndex = modes.indexOf(this.repeatMode)
+      this.repeatMode = modes[(currentIndex + 1) % modes.length]
     },
-
-    loadMetadata() {
-      this.durationSeconds = parseInt(this.audio.duration)
+    handleTrackEnd() {
+      if (this.repeatMode === 'one') {
+        this.audioElement.currentTime = 0
+        this.audioElement.play()
+      } else {
+        this.nextTrack()
+      }
     },
-
-    progressTrack(payload) {
-      this.currentSeconds = payload[0] * this.durationSeconds / 100
-    },
-
-    pauseTrack() {
+    stop() {
+      if (this.audioElement) {
+        this.audioElement.pause()
+        this.audioElement.currentTime = 0
+      }
       this.isPlaying = false
-      this.audio.pause();
+      this.isPlayerVisible = false
     },
+    closePlayer() {
+      this.stop()
+      this.isPlayerVisible = false
+    },
+    openPlayerById(id) {
+      const filesStore = useFilesStore()
+      const track = filesStore.files.find(file => file.id === id && file.mimetype.startsWith('audio/'))
 
-    playTrack() {
-      this.isPlaying = true
-      this.audio.play();     
+      if (track) {
+        this.currentTrack = track
+        this.loadTrack()
+        this.isPlayerVisible = true
+      } else {
+        console.error('Track not found')
+      }
     },
   }
 })

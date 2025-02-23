@@ -37,3 +37,12 @@ export interface FileInfo {
   audioMetadata?: AudioMetadata;
   videoMetadata?: VideoMetadata;
 }
+export interface FilesState {
+  loading: boolean;
+  files: FileInfo[];
+  photos: FileInfo[];
+  publicURL: string;
+  storageFilesSize: number;
+  storageCapacity: number;
+  loadingStates: Record<string, boolean>;
+}

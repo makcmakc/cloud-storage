@@ -1,6 +1,6 @@
 <template>
   <header class="">
-    <div class="navigation space-between md:flex items-center flex h-11 bg-muted border-b px-2" :class="{'border-zinc-700': playerStore.visible}">    
+    <div class="navigation space-between md:flex items-center flex h-11 bg-muted border-b px-2" :class="{'border-zinc-700': isPlayerVisible}">    
       <div class="flex items-center justify-between w-full">
         <div class="gap-3 inline-flex items-center justify-center">
           <SidebarTrigger class="size-4 text-muted-foreground" />
@@ -60,7 +60,7 @@
     </div>
 
     <Transition name="slide-down">
-      <AudioPlayer v-if="playerStore.visible" />
+      <AudioPlayer v-if="isPlayerVisible" />
     </Transition>
   </header>
 </template>
@@ -74,6 +74,7 @@ import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Separator } from '@/components/ui/separator'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
+
 import AudioPlayer from "@/components/files/viewers/AudioPlayer.vue"
 
 import { SlashIcon } from '@radix-icons/vue'
@@ -83,11 +84,13 @@ import { usePlayerStore } from '@/stores/player'
 
 import { capitalizeString } from "@/utils/capitalizeString"
 
-const playerStore = usePlayerStore()
-const router = useRoute();
 
 const viewBy = ref('tile')
 const sortBy = ref('name')
 
+const playerStore = usePlayerStore()
+const router = useRoute()
+
+const isPlayerVisible = computed(() => playerStore.isPlayerVisible)
 const currentPath = computed(() => router.name)
 </script>

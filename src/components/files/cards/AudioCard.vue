@@ -2,7 +2,7 @@
   <BaseCard :file="props.file" :onDelete="props.onDelete">
     <template #icon>
       <div class="overflow-hidden card rounded-md relative">
-        <div v-if="file.audioMetadata.coverUrl">
+        <div v-if="hasMetadata">
           <img :src="file.audioMetadata?.coverUrl" :alt="file.name" class="card-image h-auto w-auto object-contain aspect-square" />
         </div>
         <div
@@ -34,8 +34,8 @@
             </g>
           </svg>
         </div>
-        <div class="card-action p-10">
-          <div class="track">
+        <div class="card-action p-10" :class="{'is-playing': isPlaying && currentTrackId === file.id}">
+          <div class="track" :class="{'playing': isPlaying  && currentTrackId === file.id}">
             <div class="cover">
               <button class="play" @click="playHandler"></button>
               <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 100">
@@ -84,6 +84,7 @@ import BaseCard from './BaseCard.vue'
 import { truncateString } from '@/utils/truncateString'
 import { usePlayerStore } from '@/stores/player'
 import { formatDuration } from '@/utils/formatFileSize';
+import { computed, ref } from 'vue';
 
 const props = defineProps<{
   file: FileInfo
@@ -94,10 +95,22 @@ const props = defineProps<{
 
 const playerStore = usePlayerStore()
 
-const playHandler = () => {
-  console.log(props.file)
-  playerStore.visible = true
-}
+const playbackCircle = ref()
+
+const playHandler = () => playerStore.openPlayerById(props.file.id)
+const playPause = () => playerStore.playPause()
+
+const hasMetadata = computed(() => props.file?.audioMetadata?.coverUrl ?? null)
+const currentTime = computed(() => [playerStore.currentTime])
+const duration = computed(() => playerStore.duration)
+const isPlaying = computed(() => playerStore.isPlaying)
+const currentTrackId = computed(() => playerStore.currentTrack.id)
+const totalLength = computed(() => playbackCircle.value?.getTotalLength() ?? 0)
+
+const currentTrackProgress = computed(() => {
+  const playbackCircleLength = playbackCircle.value?.getTotalLength() ?? 0
+  return playbackCircleLength - ( currentTime.value[0] / duration.value * playbackCircleLength)
+})
 </script>
 
 
